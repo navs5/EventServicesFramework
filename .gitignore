@@ -1,0 +1,19 @@
+/Outputs/*.crf
+/Outputs/*.o
+/Outputs/*.d
+/Outputs/*.axf
+/Outputs/*.lnp
+/Outputs/*.bin
+/Outputs/*.htm
+/Outputs/*.map
+/Outputs/*.sct
+/*.dep
+/*.bak
+
+# while we don't actually *need* these uvgui files, it causes errors to be
+# reported when re-opening the IDE after a change in branches, so track them anyway
+# /*.uvguix.*
+# /*.uvgui.*
+
+# these .orig files are a by-product of using KDiff3 to merge
+*.orig
