@@ -14,6 +14,7 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 08/16/17 14:13 jec      corrected ONE_SEC constant to match Tiva tick rate
  11/02/13 17:21 jec      added exercise of the event deferral/recall module
  08/05/13 20:33 jec      converted to test harness service
  01/16/12 09:58 jec      began conversion from TemplateFSM.c
