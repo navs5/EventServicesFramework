@@ -15,11 +15,9 @@
 /*----------------------------- Include Files -----------------------------*/
 #include "ES_Configure.h"
 #include "ES_Queue.h"
-#include "ES_Port.h"
+#include "ES_Port.h" /* get the macros for EnterCritical and ExitCritical */
 
 /*----------------------------- Module Defines ----------------------------*/
-unsigned int _PRIMASK_temp;
-//unsigned int _FAULTMASK_temp;
 // QueueSize is max number of entries in the queue
 // CurrentIndex is the 'read-from' index,
 // actually CurrentIndex + sizeof(EF_Queue_t)

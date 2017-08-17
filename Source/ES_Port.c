@@ -54,6 +54,10 @@ static volatile uint8_t TickCount;
 // 8 and 16 bit processors
 static volatile uint16_t SysTickCounter = 0;
 
+// This variable is used to store the state of the interrupt mask when
+// doing EnterCritical/ExitCritical pairs
+uint32_t _PRIMASK_temp;
+
 /****************************************************************************
  Function
      _HW_Timer_Init
@@ -196,48 +200,10 @@ void ConsoleInit(void)
 
 
 
-#if defined(ccs)
+#if defined(rvmdk) || defined(__ARMCC_VERSION)
 uint32_t CPUgetPRIMASK_cpsid(void)
 {
-    __asm("    mrs     r0, primask	;	Store PRIMASK in r0\n"
-          "    cpsid   i			;	Disable interrupts\n"
-          "    bx      lr			;	Return from function\n"
-    	  "							;	Return PRIMASK in r0\n");
-
-    /* Used to satisfy compiler. Actual return in r0 */
-	return 0;
-}
-
-void CPUsetPRIMASK(uint32_t newPRIMASK)
-{
-	// Set the PRIMASK register to passed in parameter
-	__asm("    msr    primask, r0	;	Store newPRIMASK in PRIMASK\n"
-		  "    bx     lr			;	Return from function\n");
-}
-
-uint32_t CPUgetFAULTMASK_cpsid(void)
-{
-    __asm("    mrs     r0, faultmask;	Store FAULTMASK in r0\n"
-          "    cpsid   f			;	Disable fault handlers & interrupts\n"
-          "    bx      lr			;	Return from function\n"
-    	  "							;	Return FAULTMASK in r0\n");
-
-    /* Used to satisfy compiler. Actual return in r0 */
-	return 0;
-}
-
-void CPUsetFAULTMASK(uint32_t newFAULTMASK)
-{
-	// Set the FAULTMASK register to the passed in parameter
-	__asm("    msr    faultmask, r0	;	Store newFAULTMASK in FAULTMASK\n");
-	//	  "    bx     lr			;	Return from function\n");
-}
-#endif
-
-#if defined(rvmdk) || defined(__ARMCC_VERSION)
-inline uint32_t CPUgetPRIMASK_cpsid(void)
-{
-  uint32_t r0;
+  register uint32_t r0;
   __asm
   {
     mrs     r0, PRIMASK;	  // Store PRIMASK in r0
@@ -246,7 +212,7 @@ inline uint32_t CPUgetPRIMASK_cpsid(void)
   return r0;
 }
 
-inline void CPUsetPRIMASK(uint32_t newPRIMASK)
+void CPUsetPRIMASK(uint32_t newPRIMASK)
 {
   __asm
   {
@@ -254,22 +220,7 @@ inline void CPUsetPRIMASK(uint32_t newPRIMASK)
   }
 }
 
-inline uint32_t CPUgetFAULTMASK_cpsid(void)
-{
-  uint32_t r0;
-  __asm
-  {
-    mrs     r0, FAULTMASK;	// Store FAULTMASK in r0
-    cpsid   i;				      // Disable interrupts
-  }
-  return r0;
-}
 
-inline void CPUsetFAULTMASK(uint32_t newFAULTMASK)
-{
-  __asm
-  {
-    msr     FAULTMASK, newFAULTMASK	  // Store newFAULTMASK in FAULTMASK
-  }
-}
 #endif
+
+
