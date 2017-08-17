@@ -9,8 +9,11 @@
  History
  When           Who     What/Why
  -------------- ---     --------
-  10/11/15 18:00 jec      added new event type ES_SHORT_TIMEOUT
-  10/21/13 20:54 jec      lots of added entries to bring the number of timers
+ 12/19/16 20:19  jec     removed EVENT_CHECK_HEADER definition. This goes with
+                         the V2.3 move to a single wrapper for event checking 
+                         headers
+  10/11/15 18:00 jec     added new event type ES_SHORT_TIMEOUT
+  10/21/13 20:54 jec     lots of added entries to bring the number of timers
                          and services up to 16 each
  08/06/13 14:10 jec      removed PostKeyFunc stuff since we are moving that
                          functionality out of the framework and putting it
@@ -18,8 +21,8 @@
  01/15/12 10:03 jec      started coding
 *****************************************************************************/
 
-#ifndef CONFIGURE_H
-#define CONFIGURE_H
+#ifndef ES_CONFIGURE_H
+#define ES_CONFIGURE_H
 
 /****************************************************************************/
 // The maximum number of services sets an upper bound on the number of 
@@ -289,9 +292,6 @@ typedef enum {  ES_NO_EVENT = 0,
 #define DIST_LIST7 PostTemplateFSM
 #endif
 
-/****************************************************************************/
-// This are the name of the Event checking funcion header file. 
-#define EVENT_CHECK_HEADER "EventCheckers.h"
 
 /****************************************************************************/
 // This is the list of event checking functions 
@@ -330,4 +330,4 @@ typedef enum {  ES_NO_EVENT = 0,
 
 #define SERVICE0_TIMER 15
 
-#endif /* CONFIGURE_H */
+#endif /* ES_CONFIGURE_H */

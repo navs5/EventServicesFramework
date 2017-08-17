@@ -8,6 +8,8 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 12/19/16 20:18 jec      changed includes to accomodate the change to a fixed
+                         wrapper header for all event checkers
  11/02/13 17:05 jec      added PostToServiceLIFO function
  10/21/13 17:50 jec      added entries to expand number of possible services to 
                          16
@@ -27,13 +29,21 @@
 #include "ES_Framework.h"
 #include "ES_Queue.h"
 #include "ES_LookupTables.h"
-#include <stdio.h>
-
+#include "ES_Timers.h"
+#include "ES_General.h"
+#include "ES_CheckEvents.h"
 // Include the header files for the Service modules.
 // This gets you the prototypes for the public service functions.
 
 #include "ES_ServiceHeaders.h"
+// new at V2.3
+#include "ES_EventCheckWrapper.h"
 
+#include <stdio.h>
+
+#ifndef ES_CONFIGURE_H
+#error "ES_Configure.h was not included"
+#endif
 
 /*----------------------------- Module Defines ----------------------------*/
 typedef bool InitFunc_t( uint8_t Priority );

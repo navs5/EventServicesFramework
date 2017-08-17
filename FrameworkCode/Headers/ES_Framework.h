@@ -16,12 +16,17 @@
 #ifndef ES_Framework_H
 #define ES_Framework_H
 
-#include "ES_Port.h"
 #include "ES_Types.h"
-#include "ES_General.h"
-#include "ES_CheckEvents.h"
-#include "ES_PostList.h"
+#include "ES_Port.h"
 #include "ES_Events.h"
+
+// These includes are not strictly necessary for the framework, but simplify
+// the use of the framework by requiring only 2 include files
+// ES_Configure.h and ES_Framework.h
+// The balance of the framework headers are included here
+
+#include "ES_PostList.h"
+#include "ES_General.h"
 #include "ES_Timers.h"
 
 typedef enum {
