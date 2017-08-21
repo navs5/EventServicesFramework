@@ -1,4 +1,18 @@
-#include <stdint.h>
+/****************************************************************************
+ Module
+     main.c
+ Description
+     starter main() function for Events and Services Framework applications
+ Notes
+     
+ History
+ When           Who     What/Why
+ -------------- ---     --------
+ 08/21/17 12:53 jec     added this header as part of coding standard and added
+                        code to enable as GPIO the port poins that come out of 
+                        reset locked or in an alternate function.
+*****************************************************************************/#include <stdint.h>
+
 #include <stdbool.h>
 #include <stdio.h>
 #include "inc/hw_types.h"
@@ -12,6 +26,7 @@
 #include "ES_Framework.h"
 #include "ES_Port.h"
 #include "termio.h"
+#include "EnablePA25_PB23_PD7_PF0.h"
 
 #define clrScrn() 	printf("\x1b[2J")
 #define goHome()	printf("\x1b[1,1H")
@@ -38,6 +53,13 @@ int main(void)
 	printf("Press any key to post key-stroke events to Service 0\n\r");
 	printf("Press 'd' to test event deferral \n\r");
 	printf("Press 'r' to test event recall \n\r");
+
+  // reprogram the ports that are set as alternate functions or
+  // locked coming out of reset. (PA2-5, PB2-3, PD7, PF0)
+  // After this call these ports are set
+  // as GPIO inputs and can be freely re-programmed to change config.
+  // or assign to alternate any functions available on those pins
+  PortFunctionInit();
 
 	// Your hardware initialization function calls go here
 

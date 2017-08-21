@@ -14,6 +14,8 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 08/21/17 21:44 jec     modified LED blink routine to only modify bit 3 so that
+                        I can test the new new framework debugging lines on PF1-2
  08/16/17 14:13 jec      corrected ONE_SEC constant to match Tiva tick rate
  11/02/13 17:21 jec      added exercise of the event deferral/recall module
  08/05/13 20:33 jec      converted to test harness service
@@ -211,33 +213,29 @@ static void InitLED(void)
 	// enable the clock to Port F
 	HWREG(SYSCTL_RCGCGPIO) |= SYSCTL_RCGCGPIO_R5;
 	// kill a few cycles to let the peripheral clock get going
-	Dummy = HWREG(SYSCTL_RCGCGPIO);
-	//SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
-	
+  while ((HWREG(SYSCTL_PRGPIO) & BIT5HI) != BIT5HI)
+    ;
 	// Enable pins for digital I/O
-	HWREG(GPIO_PORTF_BASE+GPIO_O_DEN) |= (GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
+	HWREG(GPIO_PORTF_BASE+GPIO_O_DEN) |= (GPIO_PIN_3);
 	
-	// make pins 1,2 & 3 on Port F into outputs
-	HWREG(GPIO_PORTF_BASE+GPIO_O_DIR) |= (GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
-	//GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3);
+	// make pin 3 on Port F into outputs
+	HWREG(GPIO_PORTF_BASE+GPIO_O_DIR) |= (GPIO_PIN_3);
 }
 
 
 static void BlinkLED(void)
 {
-	static uint8_t LEDvalue = 2;
+	static uint8_t LEDvalue = 8;
 	
-	// Turn off all of the LEDs
-	HWREG(GPIO_PORTF_BASE+(GPIO_O_DATA + (0xff<<2))) &= ~(GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
-	// Turn on the new LEDs
-	HWREG(GPIO_PORTF_BASE+(GPIO_O_DATA + (0xff<<2))) |= LEDvalue;
+	// toggle state of LED
+	HWREG(GPIO_PORTF_BASE+(GPIO_O_DATA + (0xff<<2))) ^= LEDvalue;
 	
 	//GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, LEDvalue);
 	// Cycle through Red, Green and Blue LEDs
-	if (LEDvalue == 8) 
-		{LEDvalue = 2;} 
-	else 
-		{LEDvalue = LEDvalue*2;}
+//	if (LEDvalue == 8) 
+//		{LEDvalue = 2;} 
+//	else 
+//		{LEDvalue = LEDvalue*2;}
 
 }
 /*------------------------------- Footnotes -------------------------------*/

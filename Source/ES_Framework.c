@@ -8,6 +8,8 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 08/21/17 13:18 jec     added conditional call to initialize the port lines
+                        for the hardware debugging of the framework/apps
  12/19/16 20:18 jec      changed includes to accomodate the change to a fixed
                          wrapper header for all event checkers
  11/02/13 17:05 jec      added PostToServiceLIFO function
@@ -36,8 +38,12 @@
 // This gets you the prototypes for the public service functions.
 
 #include "ES_ServiceHeaders.h"
-// new at V2.3
+// new at V2.4
 #include "ES_EventCheckWrapper.h"
+
+#ifdef  _INCLUDE_BASIC_FRAMEWORK_DEBUG_
+#include "ES_Port.h"
+#endif  
 
 #include <stdio.h>
 
@@ -263,6 +269,9 @@ ES_Return_t ES_Initialize( TimerRate_t NewRate ){
     if ( ServDescList[i].InitFunc(i) != true )
       return FailedInit; // this is a failed initialization
   }
+#ifdef _INCLUDE_BASIC_FRAMEWORK_DEBUG_
+  _HW_DebugLines_Init();
+#endif  
   return Success;
 }
 
@@ -299,14 +308,26 @@ ES_Return_t ES_Run( void ){
       if ( ES_DeQueue( EventQueues[HighestPrior].pMem, &ThisEvent ) == 0 ){
         Ready &= BitNum2ClrMask[HighestPrior]; // mark queue as now empty
       }
+#ifdef _INCLUDE_BASIC_FRAMEWORK_DEBUG_
+      _HW_DebugSetLine1();
+#endif  
       if( ServDescList[HighestPrior].RunFunc(ThisEvent).EventType != 
                                                               ES_NO_EVENT) {
               return FailedRun;
       }
+#ifdef _INCLUDE_BASIC_FRAMEWORK_DEBUG_
+      _HW_DebugClearLine1();
+#endif  
     }
 
+#ifdef _INCLUDE_BASIC_FRAMEWORK_DEBUG_
+    _HW_DebugSetLine2();
+#endif  
     // all the queues are empty, so look for new user detected events
     ES_CheckUserEvents();
+#ifdef _INCLUDE_BASIC_FRAMEWORK_DEBUG_
+    _HW_DebugClearLine2();
+#endif  
   }
 }
 

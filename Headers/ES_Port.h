@@ -102,4 +102,14 @@ void ConsoleInit(void);
 // and the one Framework function that we define here
 uint16_t ES_Timer_GetTime(void);
 
+
+// prototypes for debugging port functions
+#ifdef _INCLUDE_BASIC_FRAMEWORK_DEBUG_
+void _HW_DebugLines_Init(void);
+void _HW_DebugSetLine1(void);
+void _HW_DebugClearLine1(void);
+void _HW_DebugSetLine2(void);
+void _HW_DebugClearLine2(void);
+
+#endif
 #endif
