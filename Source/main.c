@@ -35,14 +35,13 @@
 
 int main(void)
 {  
+	ES_Return_t ErrorType;
+
 	// Set the clock to run at 40MhZ using the PLL and 16MHz external crystal
 	SysCtlClockSet(SYSCTL_SYSDIV_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN
 			| SYSCTL_XTAL_16MHZ);
 	TERMIO_Init();
 	clrScrn();
-
-	ES_Return_t ErrorType;
-
 
 	// When doing testing, it is useful to announce just which program
 	// is running.
