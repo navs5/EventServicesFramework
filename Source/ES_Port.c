@@ -15,6 +15,8 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 08/21/17 13:47 jec     added functions to init 2 lines for debugging the framework
+                        and functions to set & clear those lines.
  03/13/14 10:30	joa		  Updated files to use with Cortex M4 processor core.
                         Specifically, this was tested on a TI TM4C123G mcu.
  03/05/14 13:20	joa		  Began port for TM4C123G
