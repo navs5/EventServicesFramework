@@ -8,6 +8,8 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 10/19/17 14:22 jec      changed include to ES_Cpnfigre to get definition of 
+                         ES_EventTyp_t
  08/05/13 15:19 jec      modifications to suit new portable type definitions
  01/15/12 11:46 jec      moved event enum to config file, changed prefixes to ES
  10/23/11 22:01 jec      customized for Remote Lock problem
@@ -18,7 +20,9 @@
 #ifndef ES_Events_H
 #define ES_Events_H
 
-#include "ES_Types.h"
+#include <stdint.h>
+
+#include "ES_Configure.h"
 
 typedef struct ES_Event_t {
     ES_EventTyp_t EventType;    // what kind of event?

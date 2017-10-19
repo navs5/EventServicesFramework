@@ -15,12 +15,10 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+
 #include "inc/hw_types.h"
 #include "inc/hw_memmap.h"
 #include "driverlib/sysctl.h"
-#include "driverlib/gpio.h"
-#include "driverlib/interrupt.h"
-#include "utils/uartstdio.h"
 
 #include "ES_Configure.h"
 #include "ES_Framework.h"

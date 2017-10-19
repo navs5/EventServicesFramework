@@ -8,8 +8,10 @@
 #ifndef TestHarnessService0_H
 #define TestHarnessService0_H
 
-#include "ES_Configure.h"
-#include "ES_Types.h"
+#include <stdint.h>
+#include <stdbool.h>
+
+#include "ES_Events.h"
 
 // Public Function Prototypes
 
