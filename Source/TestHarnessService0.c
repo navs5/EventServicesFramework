@@ -14,26 +14,27 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 08/21/17 21:44 jec     modified LED blink routine to only modify bit 3 so that
+                        I can test the new new framework debugging lines on PF1-2
  08/16/17 14:13 jec      corrected ONE_SEC constant to match Tiva tick rate
  11/02/13 17:21 jec      added exercise of the event deferral/recall module
  08/05/13 20:33 jec      converted to test harness service
  01/16/12 09:58 jec      began conversion from TemplateFSM.c
 ****************************************************************************/
 /*----------------------------- Include Files -----------------------------*/
-/* include header files for the framework and this service
-*/
-#include "ES_Configure.h"
-#include "ES_Framework.h"
-#include "ES_DeferRecall.h"
+// This module
 #include "TestHarnessService0.h"
 
+// Hardware
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
 #include "inc/hw_gpio.h"
 #include "inc/hw_sysctl.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/pin_map.h"	// Define PART_TM4C123GH6PM in project
-#include "driverlib/gpio.h"
+
+// Event & Services Framework
+#include "ES_Configure.h"
+#include "ES_Framework.h"
+#include "ES_DeferRecall.h"
 #include "ES_ShortTimer.h"
 
 /*----------------------------- Module Defines ----------------------------*/
@@ -43,6 +44,8 @@
 #define TWO_SEC (ONE_SEC*2)
 #define FIVE_SEC (ONE_SEC*5)
 
+
+#define ALL_BITS (0xff<<2)
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
    relevant to the behavior of this service
@@ -92,10 +95,19 @@ bool InitTestHarnessService0 ( uint8_t Priority )
   ES_ShortTimerInit(MyPriority, SHORT_TIMER_UNUSED);
 
   // set up I/O lines for debugging
-  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
-  GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, GPIO_PIN_2);
+	// enable the clock to Port B
+	HWREG(SYSCTL_RCGCGPIO) |= SYSCTL_RCGCGPIO_R1;
+	// kill a few cycles to let the peripheral clock get going
+  while ((HWREG(SYSCTL_PRGPIO) & BIT1HI) != BIT1HI)
+  {
+  }
+	// Enable pins for digital I/O
+	HWREG(GPIO_PORTB_BASE+GPIO_O_DEN) |= (BIT2HI);
+	
+	// make pin 2 on Port B into outputs
+	HWREG(GPIO_PORTF_BASE+GPIO_O_DIR) |= (BIT2HI);
   // start with the lines low
-  GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, BIT2LO);  
+	HWREG(GPIO_PORTB_BASE+(GPIO_O_DATA + ALL_BITS)) &= BIT2LO;
 
   
   // post the initial transition event
@@ -154,7 +166,8 @@ ES_Event RunTestHarnessService0( ES_Event ThisEvent )
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 	static char DeferredChar = '1';
   
-  switch (ThisEvent.EventType){
+  switch (ThisEvent.EventType)
+  {
     case ES_INIT :
       ES_Timer_InitTimer(SERVICE0_TIMER, HALF_SEC);
       puts("Service 00:");
@@ -167,19 +180,22 @@ ES_Event RunTestHarnessService0( ES_Event ThisEvent )
 			BlinkLED();
       break;
     case ES_SHORT_TIMEOUT :  // lower the line & announce
-      GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, BIT2LO);  
+      HWREG(GPIO_PORTB_BASE+(GPIO_O_DATA + ALL_BITS)) &= BIT2LO;
       puts("ES_SHORT_TIMEOUT received");
       break;
     case ES_NEW_KEY :  // announce
       printf("ES_NEW_KEY received with -> %c <- in Service 0\r\n", 
               (char)ThisEvent.EventParam);
-      if( 'd' == ThisEvent.EventParam ){
+      if( 'd' == ThisEvent.EventParam )
+      {
           ThisEvent.EventParam = DeferredChar++; //
-          if (ES_DeferEvent( DeferralQueue, ThisEvent )){
+          if (ES_DeferEvent( DeferralQueue, ThisEvent ))
+          {
             puts("ES_NEW_KEY deferred in Service 0\r");
           }
       }
-      if( 'r' == ThisEvent.EventParam ){
+      if( 'r' == ThisEvent.EventParam )
+      {
           ThisEvent.EventParam = 'Q'; // This one gets posted normally
           ES_PostToService( MyPriority, ThisEvent);
           // but we slide the deferred events under it so it(they) should come out first
@@ -188,10 +204,11 @@ ES_Event RunTestHarnessService0( ES_Event ThisEvent )
 					DeferredChar = '1';
           }
       }
-     if( 'p' == ThisEvent.EventParam ){
+      if( 'p' == ThisEvent.EventParam )
+      {
           ES_ShortTimerStart(TIMER_A, 10);
           // raise the line to show we started
-          GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, BIT2HI);  
+          HWREG(GPIO_PORTB_BASE+(GPIO_O_DATA + ALL_BITS)) != BIT2HI;
           //puts("Pulsed!\r");
       }
       break;
@@ -207,37 +224,33 @@ ES_Event RunTestHarnessService0( ES_Event ThisEvent )
 
 static void InitLED(void)
 {
-	volatile uint32_t Dummy;
 	// enable the clock to Port F
 	HWREG(SYSCTL_RCGCGPIO) |= SYSCTL_RCGCGPIO_R5;
 	// kill a few cycles to let the peripheral clock get going
-	Dummy = HWREG(SYSCTL_RCGCGPIO);
-	//SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
-	
+  while ((HWREG(SYSCTL_PRGPIO) & BIT5HI) != BIT5HI)
+  {
+  }
 	// Enable pins for digital I/O
-	HWREG(GPIO_PORTF_BASE+GPIO_O_DEN) |= (GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
+	HWREG(GPIO_PORTF_BASE+GPIO_O_DEN) |= (BIT3HI);
 	
-	// make pins 1,2 & 3 on Port F into outputs
-	HWREG(GPIO_PORTF_BASE+GPIO_O_DIR) |= (GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
-	//GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3);
+	// make pin 3 on Port F into outputs
+	HWREG(GPIO_PORTF_BASE+GPIO_O_DIR) |= (BIT3HI);
 }
 
 
 static void BlinkLED(void)
 {
-	static uint8_t LEDvalue = 2;
+	static uint8_t LEDvalue = 8;
 	
-	// Turn off all of the LEDs
-	HWREG(GPIO_PORTF_BASE+(GPIO_O_DATA + (0xff<<2))) &= ~(GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
-	// Turn on the new LEDs
-	HWREG(GPIO_PORTF_BASE+(GPIO_O_DATA + (0xff<<2))) |= LEDvalue;
+	// toggle state of LED
+	HWREG(GPIO_PORTF_BASE+(GPIO_O_DATA + ALL_BITS)) ^= LEDvalue;
 	
 	//GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, LEDvalue);
 	// Cycle through Red, Green and Blue LEDs
-	if (LEDvalue == 8) 
-		{LEDvalue = 2;} 
-	else 
-		{LEDvalue = LEDvalue*2;}
+//	if (LEDvalue == 8) 
+//		{LEDvalue = 2;} 
+//	else 
+//		{LEDvalue = LEDvalue*2;}
 
 }
 /*------------------------------- Footnotes -------------------------------*/

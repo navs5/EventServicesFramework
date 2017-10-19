@@ -1,12 +1,7 @@
 /Outputs/*.crf
 /Outputs/*.o
 /Outputs/*.d
-/Outputs/*.axf
-/Outputs/*.lnp
-/Outputs/*.bin
-/Outputs/*.htm
-/Outputs/*.map
-/Outputs/*.sct
+/Outputs/*.*
 /*.dep
 /*.bak
 

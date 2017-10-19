@@ -15,15 +15,20 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 08/21/17 13:47 jec     added functions to init 2 lines for debugging the framework
+                        and functions to set & clear those lines.
+ 03/13/14 10:30	joa		  Updated files to use with Cortex M4 processor core.
+                        Specifically, this was tested on a TI TM4C123G mcu.
+ 03/05/14 13:20	joa		  Began port for TM4C123G
  08/13/13 12:42 jec     moved the hardware specific aspects of the timer here
  08/06/13 13:17 jec     Began moving the stuff from the V2 framework files
- 03/05/14 13:20	joa		Began port for TM4C123G
- 03/13/14 10:30	joa		Updated files to use with Cortex M4 processor core.
- 	 	 	 	 	 	Specifically, this was tested on a TI TM4C123G mcu.
-****************************************************************************/
+ ***************************************************************************/
 #include <stdint.h>
 #include <stdbool.h>
 #include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
+#include "inc/hw_gpio.h"
+#include "inc/hw_sysctl.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/uart.h"
@@ -31,6 +36,7 @@
 #include "driverlib/systick.h"
 #include "driverlib/gpio.h"
 #include "utils/uartstdio.h"
+
 #include "ES_Port.h"
 #include "ES_Types.h"
 #include "ES_Timers.h"
@@ -39,6 +45,24 @@
 #define UART_BAUD		115200UL
 #define SRC_CLK_FREQ	16000000UL
 #define CLK_FREQ		40000000UL
+
+// change the base address for the debug lines here
+#define DEBUG_PORT GPIO_PORTF_BASE
+// bit to use when enabling the port for debugging, 
+// must match base address from DEBUG_PORT definition above
+// BIT0HI = PortA, BIT1HI = PortB, BIT2HI = PortC, BIT3HI = PortD, 
+// BIT4HI = PortE, BIT5HI = PortF
+#define DEBUG_PORT_ENABLE_BIT BIT5HI
+
+// which bits on the port are to be used for debugging
+#define DEBUG_PORT_WHICH_BITS (BIT1HI | BIT2HI)
+
+// define wihch bit corresponds to which debugging line
+#define DEBUG_LINE_1 BIT1HI
+#define DEBUG_LINE_2 BIT2HI
+
+// Needed for debug port access 
+#define ALL_BITS (0xff<<2)
 
 // TickCount is used to track the number of timer ints that have occurred
 // since the last check. It should really never be more than 1, but just to
@@ -223,4 +247,116 @@ void CPUsetPRIMASK(uint32_t newPRIMASK)
 
 #endif
 
+/****************************************************************************
+ Function
+     _HW_DebugLines_Init
+ Parameters
+     none
+ Returns
+     None.
+ Description
+     Initializes the port lines for framework/application debugging
+ Notes
+     
+ Author
+     J. Edward Carryer, 08/21/17 11:51
+****************************************************************************/
+void _HW_DebugLines_Init(void)
+{
+	// enable clock to the debug port
+  HWREG(SYSCTL_RCGCGPIO) |= DEBUG_PORT_ENABLE_BIT;
+  while ((HWREG(SYSCTL_PRGPIO) & DEBUG_PORT_ENABLE_BIT) != DEBUG_PORT_ENABLE_BIT)
+    ; // wait for port to be ready
+ 
+  // set the debug pins as digital
+  HWREG(DEBUG_PORT+GPIO_O_DEN) |= DEBUG_PORT_WHICH_BITS;
+  // set pins as outputs
+  HWREG(DEBUG_PORT+GPIO_O_DIR) |= DEBUG_PORT_WHICH_BITS;
+  
+ 
+}
+
+/****************************************************************************
+ Function
+     _HW_DebugSetLine1
+ Parameters
+     none
+ Returns
+     None.
+ Description
+     Sets debug Line1 to be a 1
+ Notes
+     
+ Author
+     J. Edward Carryer, 08/21/17 13:23
+****************************************************************************/
+void _HW_DebugSetLine1(void)
+{
+
+  HWREG(DEBUG_PORT+(GPIO_O_DATA + ALL_BITS)) |= DEBUG_LINE_1;
+
+}
+
+/****************************************************************************
+ Function
+     _HW_DebugClearLine1
+ Parameters
+     none
+ Returns
+     None.
+ Description
+     Sets debug Line1 to be a 0
+ Notes
+     
+ Author
+     J. Edward Carryer, 08/21/17 13:23
+****************************************************************************/
+void _HW_DebugClearLine1(void)
+{
+
+  HWREG(DEBUG_PORT+(GPIO_O_DATA + ALL_BITS)) &= ~DEBUG_LINE_1;
+
+}
+
+/****************************************************************************
+ Function
+     _HW_DebugSetLine2
+ Parameters
+     none
+ Returns
+     None.
+ Description
+     Sets debug Line1 to be a 1
+ Notes
+     
+ Author
+     J. Edward Carryer, 08/21/17 13:25
+****************************************************************************/
+void _HW_DebugSetLine2(void)
+{
+
+  HWREG(DEBUG_PORT+(GPIO_O_DATA + ALL_BITS)) |= DEBUG_LINE_2;
+
+}
+
+/****************************************************************************
+ Function
+     _HW_DebugClearLine2
+ Parameters
+     none
+ Returns
+     None.
+ Description
+     Sets debug Line1 to be a 0
+ Notes
+     
+ Author
+     J. Edward Carryer, 08/21/17 13:26
+****************************************************************************/
+void _HW_DebugClearLine2(void)
+{
+
+  HWREG(DEBUG_PORT+(GPIO_O_DATA + ALL_BITS)) &= ~DEBUG_LINE_2;
+
+}
 

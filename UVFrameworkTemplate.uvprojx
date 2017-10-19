@@ -437,6 +437,11 @@
               <FileType>1</FileType>
               <FilePath>.\Source\ES_ShortTimer.c</FilePath>
             </File>
+            <File>
+              <FileName>EnablePA25_PB23_PD7_PF0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\EnablePA25_PB23_PD7_PF0.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
