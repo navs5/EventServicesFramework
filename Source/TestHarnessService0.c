@@ -14,6 +14,8 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 10/19/17 18:42 jec     removed referennces to driverlib and programmed the
+                        ports directly
  08/21/17 21:44 jec     modified LED blink routine to only modify bit 3 so that
                         I can test the new new framework debugging lines on PF1-2
  08/16/17 14:13 jec      corrected ONE_SEC constant to match Tiva tick rate
@@ -105,7 +107,7 @@ bool InitTestHarnessService0 ( uint8_t Priority )
 	HWREG(GPIO_PORTB_BASE+GPIO_O_DEN) |= (BIT2HI);
 	
 	// make pin 2 on Port B into outputs
-	HWREG(GPIO_PORTF_BASE+GPIO_O_DIR) |= (BIT2HI);
+	HWREG(GPIO_PORTB_BASE+GPIO_O_DIR) |= (BIT2HI);
   // start with the lines low
 	HWREG(GPIO_PORTB_BASE+(GPIO_O_DATA + ALL_BITS)) &= BIT2LO;
 
@@ -208,7 +210,7 @@ ES_Event RunTestHarnessService0( ES_Event ThisEvent )
       {
           ES_ShortTimerStart(TIMER_A, 10);
           // raise the line to show we started
-          HWREG(GPIO_PORTB_BASE+(GPIO_O_DATA + ALL_BITS)) != BIT2HI;
+          HWREG(GPIO_PORTB_BASE+(GPIO_O_DATA + ALL_BITS)) |= BIT2HI;
           //puts("Pulsed!\r");
       }
       break;
