@@ -14,6 +14,7 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 10/19/17 21:28 jec     meaningless change to test updating
  10/19/17 18:42 jec     removed referennces to driverlib and programmed the
                         ports directly
  08/21/17 21:44 jec     modified LED blink routine to only modify bit 3 so that
