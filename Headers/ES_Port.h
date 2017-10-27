@@ -9,6 +9,7 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 10/26/17 18:39 jec     moves definition of ALL_BITS to here
  10/14/15 21:50 jec     added prototype for ES_Timer_GetTime
  01/18/15 13:24 jec     clean up and adapt to use TI driver lib functions
                         for implementing EnterCritical & ExitCritical
