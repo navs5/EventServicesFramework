@@ -9,6 +9,8 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 10/26/17 18:20 jec     moved prototype of PostToList into the conditional to 
+                        eliminate warning when not using distribution lists
  08/05/13 15:04 jec      added #includes for ES_Port & ES_Types and converted
                          types to match portable types
  01/15/12 15:55 jec      re-coded for Gen2 with conditional declarations
@@ -24,13 +26,13 @@
 #include "ES_ServiceHeaders.h"
 
 /*---------------------------- Module Functions ---------------------------*/
-static bool PostToList(  PostFunc_t *const*FuncList, uint8_t ListSize, ES_Event NewEvent);
 
 /*---------------------------- Module Variables ---------------------------*/
 // Fill in these arrays with the lists of posting funcitons for the state
 // machines that will have common events delivered to them.
 
 #if NUM_DIST_LISTS > 0
+static bool PostToList(  PostFunc_t *const*FuncList, uint8_t ListSize, ES_Event NewEvent);
 static PostFunc_t * const DistList00[] = {DIST_LIST0 };
 // the endif for NUM_DIST_LISTS > 0 is at the end of the file
 #if NUM_DIST_LISTS > 1
