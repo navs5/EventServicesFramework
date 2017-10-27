@@ -102,6 +102,8 @@ void ConsoleInit(void);
 // and the one Framework function that we define here
 uint16_t ES_Timer_GetTime(void);
 
+// define the constant necessary to get at all of the bits of a port register
+#define ALL_BITS (0xff<<2)
 
 // prototypes for debugging port functions
 #ifdef _INCLUDE_BASIC_FRAMEWORK_DEBUG_

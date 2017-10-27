@@ -14,6 +14,7 @@
  History
  When           Who     What/Why
  -------------- ---     --------
+ 10/26/17 18:26 jec     moves definition of ALL_BITS to ES_Port.h
  10/19/17 21:28 jec     meaningless change to test updating
  10/19/17 18:42 jec     removed referennces to driverlib and programmed the
                         ports directly
@@ -48,7 +49,7 @@
 #define FIVE_SEC (ONE_SEC*5)
 
 
-#define ALL_BITS (0xff<<2)
+// #define ALL_BITS (0xff<<2)   Moved to ES_Port.h
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
    relevant to the behavior of this service
