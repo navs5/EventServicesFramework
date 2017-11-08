@@ -14,17 +14,17 @@
    8-bit constants max value 0x11111111, always fits in unsigned long
 */
 
-#define HEX__(n) 0x##n##UL
+#define HEX__(n) 0x ## n ## UL
 
 /* 8-bit conversion function */
-#define B8__(x) ((x&0x0000000FUL)?1:0)\
-               +((x&0x000000F0UL)?2:0)\
-               +((x&0x00000F00UL)?4:0)\
-               +((x&0x0000F000UL)?8:0)\
-               +((x&0x000F0000UL)?16:0)\
-               +((x&0x00F00000UL)?32:0)\
-               +((x&0x0F000000UL)?64:0)\
-               +((x&0xF0000000UL)?128:0)
+#define B8__(x) ((x & 0x0000000FUL) ? 1 : 0) \
+  + ((x & 0x000000F0UL) ? 2 : 0) \
+  + ((x & 0x00000F00UL) ? 4 : 0) \
+  + ((x & 0x0000F000UL) ? 8 : 0) \
+  + ((x & 0x000F0000UL) ? 16 : 0) \
+  + ((x & 0x00F00000UL) ? 32 : 0) \
+  + ((x & 0x0F000000UL) ? 64 : 0) \
+  + ((x & 0xF0000000UL) ? 128 : 0)
 
 /* *** user macros *** */
 /* for upto 8-bit binary constants */
@@ -33,15 +33,15 @@
 
 /* for upto 16-bit binary constants, MSB first */
 
-#define B16(dmsb,dlsb) (((unsigned short)B8(dmsb)<<8)\
-+ B8(dlsb))
+#define B16(dmsb, dlsb) (((unsigned short)B8(dmsb) << 8) \
+      + B8(dlsb))
 
 /* for upto 32-bit binary constants, MSB first */
 
-#define B32(dmsb,db2,db3,dlsb) (((unsigned long)B8(dmsb)<<24) \
-  + ((unsigned long)B8(db2)<<16) \
-  + ((unsigned long)B8(db3)<<8) \
-  + B8(dlsb))
+#define B32(dmsb, db2, db3, dlsb) (((unsigned long)B8(dmsb) << 24) \
+      + ((unsigned long)B8(db2) << 16) \
+      + ((unsigned long)B8(db3) << 8) \
+      + B8(dlsb))
 
 #endif                       /* BIN_CONST_H */
 

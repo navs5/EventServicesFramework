@@ -9,6 +9,6 @@
 #define SHORT_TIMER_UNUSED MAX_NUM_SERVICES
 
 void ES_ShortTimerInit(uint8_t TimeAPrio, uint8_t TimeBPrio);
-void ES_ShortTimerStart( uint32_t Which, uint16_t TimeoutValue);
+void ES_ShortTimerStart(uint32_t Which, uint16_t TimeoutValue);
 
 #endif //ES_ShortTimer_H
