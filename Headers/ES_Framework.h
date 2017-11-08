@@ -29,19 +29,20 @@
 #include "ES_General.h"
 #include "ES_Timers.h"
 
-typedef enum {
-              Success = 0,
-              FailedPost = 1,
-              FailedRun,
-              FailedPointer,
-              FailedIndex,
-              FailedInit
-} ES_Return_t;
+typedef enum
+{
+  Success     = 0,
+  FailedPost  = 1,
+  FailedRun,
+  FailedPointer,
+  FailedIndex,
+  FailedInit
+}ES_Return_t;
 
-ES_Return_t ES_Initialize( TimerRate_t NewRate  );
-ES_Return_t ES_Run( void );
-bool ES_PostAll( ES_Event ThisEvent );
-bool ES_PostToService( uint8_t WhichService, ES_Event ThisEvent);
-bool ES_PostToServiceLIFO( uint8_t WhichService, ES_Event TheEvent);
+ES_Return_t ES_Initialize(TimerRate_t NewRate);
+ES_Return_t ES_Run(void);
+bool ES_PostAll(ES_Event ThisEvent);
+bool ES_PostToService(uint8_t WhichService, ES_Event ThisEvent);
+bool ES_PostToServiceLIFO(uint8_t WhichService, ES_Event TheEvent);
 
 #endif   // ES_Framework_H

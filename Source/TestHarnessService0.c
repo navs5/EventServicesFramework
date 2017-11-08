@@ -6,7 +6,7 @@
    1.0.1
 
  Description
-   This is the first service for the Test Harness under the 
+   This is the first service for the Test Harness under the
    Gen2 Events and Services Framework.
 
  Notes
@@ -44,10 +44,9 @@
 /*----------------------------- Module Defines ----------------------------*/
 // these times assume a 1.000mS/tick timing
 #define ONE_SEC 1000
-#define HALF_SEC (ONE_SEC/2)
-#define TWO_SEC (ONE_SEC*2)
-#define FIVE_SEC (ONE_SEC*5)
-
+#define HALF_SEC (ONE_SEC / 2)
+#define TWO_SEC (ONE_SEC * 2)
+#define FIVE_SEC (ONE_SEC * 5)
 
 // #define ALL_BITS (0xff<<2)   Moved to ES_Port.h
 /*---------------------------- Module Functions ---------------------------*/
@@ -62,7 +61,7 @@ static void BlinkLED(void);
 // with the introduction of Gen2, we need a module level Priority variable
 static uint8_t MyPriority;
 // add a deferral queue for up to 3 pending deferrals +1 to allow for ovehead
-static ES_Event DeferralQueue[3+1];
+static ES_Event DeferralQueue[3 + 1];
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -76,52 +75,51 @@ static ES_Event DeferralQueue[3+1];
      bool, false if error in initialization, true otherwise
 
  Description
-     Saves away the priority, and does any 
+     Saves away the priority, and does any
      other required initialization for this service
  Notes
 
  Author
      J. Edward Carryer, 01/16/12, 10:00
 ****************************************************************************/
-bool InitTestHarnessService0 ( uint8_t Priority )
+bool InitTestHarnessService0(uint8_t Priority)
 {
   ES_Event ThisEvent;
-  
+
   MyPriority = Priority;
   /********************************************
    in here you write your initialization code
    *******************************************/
-	// initialize deferral queue for testing Deferal function
-  ES_InitDeferralQueueWith( DeferralQueue, ARRAY_SIZE(DeferralQueue) );
-	// initialize LED drive for testing/debug output
-	InitLED();
+  // initialize deferral queue for testing Deferal function
+  ES_InitDeferralQueueWith(DeferralQueue, ARRAY_SIZE(DeferralQueue));
+  // initialize LED drive for testing/debug output
+  InitLED();
   // initialize the Short timer system for channel A
   ES_ShortTimerInit(MyPriority, SHORT_TIMER_UNUSED);
 
   // set up I/O lines for debugging
-	// enable the clock to Port B
-	HWREG(SYSCTL_RCGCGPIO) |= SYSCTL_RCGCGPIO_R1;
-	// kill a few cycles to let the peripheral clock get going
+  // enable the clock to Port B
+  HWREG(SYSCTL_RCGCGPIO) |= SYSCTL_RCGCGPIO_R1;
+  // kill a few cycles to let the peripheral clock get going
   while ((HWREG(SYSCTL_PRGPIO) & BIT1HI) != BIT1HI)
-  {
-  }
-	// Enable pins for digital I/O
-	HWREG(GPIO_PORTB_BASE+GPIO_O_DEN) |= (BIT2HI);
-	
-	// make pin 2 on Port B into outputs
-	HWREG(GPIO_PORTB_BASE+GPIO_O_DIR) |= (BIT2HI);
-  // start with the lines low
-	HWREG(GPIO_PORTB_BASE+(GPIO_O_DATA + ALL_BITS)) &= BIT2LO;
+  {}
+  // Enable pins for digital I/O
+  HWREG(GPIO_PORTB_BASE + GPIO_O_DEN) |= (BIT2HI);
 
-  
+  // make pin 2 on Port B into outputs
+  HWREG(GPIO_PORTB_BASE + GPIO_O_DIR) |= (BIT2HI);
+  // start with the lines low
+  HWREG(GPIO_PORTB_BASE + (GPIO_O_DATA + ALL_BITS)) &= BIT2LO;
+
   // post the initial transition event
   ThisEvent.EventType = ES_INIT;
-  if (ES_PostToService( MyPriority, ThisEvent) == true)
+  if (ES_PostToService(MyPriority, ThisEvent) == true)
   {
-      return true;
-  }else
+    return true;
+  }
+  else
   {
-      return false;
+    return false;
   }
 }
 
@@ -142,9 +140,9 @@ bool InitTestHarnessService0 ( uint8_t Priority )
  Author
      J. Edward Carryer, 10/23/11, 19:25
 ****************************************************************************/
-bool PostTestHarnessService0( ES_Event ThisEvent )
+bool PostTestHarnessService0(ES_Event ThisEvent)
 {
-  return ES_PostToService( MyPriority, ThisEvent);
+  return ES_PostToService(MyPriority, ThisEvent);
 }
 
 /****************************************************************************
@@ -160,64 +158,74 @@ bool PostTestHarnessService0( ES_Event ThisEvent )
  Description
    add your description here
  Notes
-   
+
  Author
    J. Edward Carryer, 01/15/12, 15:23
 ****************************************************************************/
-ES_Event RunTestHarnessService0( ES_Event ThisEvent )
+ES_Event RunTestHarnessService0(ES_Event ThisEvent)
 {
   ES_Event ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
-	static char DeferredChar = '1';
-  
+  static char DeferredChar = '1';
+
   switch (ThisEvent.EventType)
   {
-    case ES_INIT :
+    case ES_INIT:
+    {
       ES_Timer_InitTimer(SERVICE0_TIMER, HALF_SEC);
       puts("Service 00:");
       printf("\rES_INIT received in Service %d\r\n", MyPriority);
-      break;
-    case ES_TIMEOUT :  // re-start timer & announce
+    }
+    break;
+    case ES_TIMEOUT:   // re-start timer & announce
+    {
       ES_Timer_InitTimer(SERVICE0_TIMER, FIVE_SEC);
-      printf("ES_TIMEOUT received from Timer %d in Service %d\r\n", 
-              ThisEvent.EventParam, MyPriority);
-			BlinkLED();
-      break;
-    case ES_SHORT_TIMEOUT :  // lower the line & announce
-      HWREG(GPIO_PORTB_BASE+(GPIO_O_DATA + ALL_BITS)) &= BIT2LO;
+      printf("ES_TIMEOUT received from Timer %d in Service %d\r\n",
+          ThisEvent.EventParam, MyPriority);
+      BlinkLED();
+    }
+    break;
+    case ES_SHORT_TIMEOUT:   // lower the line & announce
+    {
+      HWREG(GPIO_PORTB_BASE + (GPIO_O_DATA + ALL_BITS)) &= BIT2LO;
       puts("ES_SHORT_TIMEOUT received");
-      break;
-    case ES_NEW_KEY :  // announce
-      printf("ES_NEW_KEY received with -> %c <- in Service 0\r\n", 
-              (char)ThisEvent.EventParam);
-      if( 'd' == ThisEvent.EventParam )
+    }
+    break;
+    case ES_NEW_KEY:   // announce
+    {
+      printf("ES_NEW_KEY received with -> %c <- in Service 0\r\n",
+          (char)ThisEvent.EventParam);
+      if ('d' == ThisEvent.EventParam)
       {
-          ThisEvent.EventParam = DeferredChar++; //
-          if (ES_DeferEvent( DeferralQueue, ThisEvent ))
-          {
-            puts("ES_NEW_KEY deferred in Service 0\r");
-          }
+        ThisEvent.EventParam = DeferredChar++;   //
+        if (ES_DeferEvent(DeferralQueue, ThisEvent))
+        {
+          puts("ES_NEW_KEY deferred in Service 0\r");
+        }
       }
-      if( 'r' == ThisEvent.EventParam )
+      if ('r' == ThisEvent.EventParam)
       {
-          ThisEvent.EventParam = 'Q'; // This one gets posted normally
-          ES_PostToService( MyPriority, ThisEvent);
-          // but we slide the deferred events under it so it(they) should come out first
-          if ( true == ES_RecallEvents( MyPriority, DeferralQueue )){
-            puts("ES_NEW_KEY(s) recalled in Service 0\r");
-					DeferredChar = '1';
-          }
+        ThisEvent.EventParam = 'Q';   // This one gets posted normally
+        ES_PostToService(MyPriority, ThisEvent);
+        // but we slide the deferred events under it so it(they) should come out first
+        if (true == ES_RecallEvents(MyPriority, DeferralQueue))
+        {
+          puts("ES_NEW_KEY(s) recalled in Service 0\r");
+          DeferredChar = '1';
+        }
       }
-      if( 'p' == ThisEvent.EventParam )
+      if ('p' == ThisEvent.EventParam)
       {
-          ES_ShortTimerStart(TIMER_A, 10);
-          // raise the line to show we started
-          HWREG(GPIO_PORTB_BASE+(GPIO_O_DATA + ALL_BITS)) |= BIT2HI;
-          //puts("Pulsed!\r");
+        ES_ShortTimerStart(TIMER_A, 10);
+        // raise the line to show we started
+        HWREG(GPIO_PORTB_BASE + (GPIO_O_DATA + ALL_BITS)) |= BIT2HI;
+        //puts("Pulsed!\r");
       }
-      break;
-    default :
-      break;
+    }
+    break;
+    default:
+    {}
+     break;
   }
   return ReturnEvent;
 }
@@ -228,35 +236,33 @@ ES_Event RunTestHarnessService0( ES_Event ThisEvent )
 
 static void InitLED(void)
 {
-	// enable the clock to Port F
-	HWREG(SYSCTL_RCGCGPIO) |= SYSCTL_RCGCGPIO_R5;
-	// kill a few cycles to let the peripheral clock get going
+  // enable the clock to Port F
+        HWREG(SYSCTL_RCGCGPIO) |= SYSCTL_RCGCGPIO_R5;
+  // kill a few cycles to let the peripheral clock get going
   while ((HWREG(SYSCTL_PRGPIO) & BIT5HI) != BIT5HI)
-  {
-  }
-	// Enable pins for digital I/O
-	HWREG(GPIO_PORTF_BASE+GPIO_O_DEN) |= (BIT3HI);
-	
-	// make pin 3 on Port F into outputs
-	HWREG(GPIO_PORTF_BASE+GPIO_O_DIR) |= (BIT3HI);
-}
+  {}
+  // Enable pins for digital I/O
+        HWREG(GPIO_PORTF_BASE + GPIO_O_DEN) |= (BIT3HI);
 
+  // make pin 3 on Port F into outputs
+        HWREG(GPIO_PORTF_BASE + GPIO_O_DIR) |= (BIT3HI);
+}
 
 static void BlinkLED(void)
 {
-	static uint8_t LEDvalue = 8;
-	
-	// toggle state of LED
-	HWREG(GPIO_PORTF_BASE+(GPIO_O_DATA + ALL_BITS)) ^= LEDvalue;
-	
-	//GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, LEDvalue);
-	// Cycle through Red, Green and Blue LEDs
-//	if (LEDvalue == 8) 
-//		{LEDvalue = 2;} 
-//	else 
-//		{LEDvalue = LEDvalue*2;}
+  static uint8_t LEDvalue = 8;
 
+  // toggle state of LED
+        HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + ALL_BITS)) ^= LEDvalue;
+
+  //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, LEDvalue);
+  // Cycle through Red, Green and Blue LEDs
+//	if (LEDvalue == 8)
+//		{LEDvalue = 2;}
+//	else
+//		{LEDvalue = LEDvalue*2;}
 }
+
 /*------------------------------- Footnotes -------------------------------*/
 /*------------------------------ End of file ------------------------------*/
 

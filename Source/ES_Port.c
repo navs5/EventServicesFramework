@@ -6,7 +6,7 @@
    1.0.1
 
  Description
-   This is the sample file to demonstrate adding the hardware specific 
+   This is the sample file to demonstrate adding the hardware specific
    functions to the Events & Services Framework. This sample is also used
    as the file for the port to the Freescale MC9S12C32 processor.
 
@@ -32,7 +32,7 @@
 #include "driverlib/sysctl.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/uart.h"
-#include "driverlib/pin_map.h"	// Define PART_TM4C123GH6PM in project
+#include "driverlib/pin_map.h"  // Define PART_TM4C123GH6PM in project
 #include "driverlib/systick.h"
 #include "driverlib/gpio.h"
 #include "utils/uartstdio.h"
@@ -41,16 +41,16 @@
 #include "ES_Types.h"
 #include "ES_Timers.h"
 
-#define UART_PORT 		0
-#define UART_BAUD		115200UL
-#define SRC_CLK_FREQ	16000000UL
-#define CLK_FREQ		40000000UL
+#define UART_PORT 0
+#define UART_BAUD 115200UL
+#define SRC_CLK_FREQ 16000000UL
+#define CLK_FREQ 40000000UL
 
 // change the base address for the debug lines here
 #define DEBUG_PORT GPIO_PORTF_BASE
-// bit to use when enabling the port for debugging, 
+// bit to use when enabling the port for debugging,
 // must match base address from DEBUG_PORT definition above
-// BIT0HI = PortA, BIT1HI = PortB, BIT2HI = PortC, BIT3HI = PortD, 
+// BIT0HI = PortA, BIT1HI = PortB, BIT2HI = PortC, BIT3HI = PortD,
 // BIT4HI = PortE, BIT5HI = PortF
 #define DEBUG_PORT_ENABLE_BIT BIT5HI
 
@@ -61,12 +61,12 @@
 #define DEBUG_LINE_1 BIT1HI
 #define DEBUG_LINE_2 BIT2HI
 
-// Needed for debug port access 
-#define ALL_BITS (0xff<<2)
+// Needed for debug port access
+#define ALL_BITS (0xff << 2)
 
 // TickCount is used to track the number of timer ints that have occurred
 // since the last check. It should really never be more than 1, but just to
-// be sure, we increment it in the interrupt response rather than simply 
+// be sure, we increment it in the interrupt response rather than simply
 // setting a flag. Using this variable and checking approach we remove the
 // need to post events from the interrupt response routine. This is necessary
 // for compilers like HTC for the midrange PICs which do not produce re-entrant
@@ -101,11 +101,10 @@ uint32_t _PRIMASK_temp;
 ****************************************************************************/
 void _HW_Timer_Init(TimerRate_t Rate)
 {
-	SysTickPeriodSet(Rate);			/* Set the SysTick Interrupt Rate */
-	SysTickIntEnable();				/* Enable the SysTick Interrupt */
-	SysTickEnable();				/* Enable SysTick */
-	IntMasterEnable();				/* Make sure interrupts are enabled */
-
+  SysTickPeriodSet(Rate); /* Set the SysTick Interrupt Rate */
+  SysTickIntEnable();     /* Enable the SysTick Interrupt */
+  SysTickEnable();        /* Enable SysTick */
+  IntMasterEnable();      /* Make sure interrupts are enabled */
 }
 
 /****************************************************************************
@@ -127,11 +126,11 @@ void _HW_Timer_Init(TimerRate_t Rate)
 ****************************************************************************/
 void SysTickIntHandler(void)
 {
-	/* Interrupt automatically cleared by hardware */
+  /* Interrupt automatically cleared by hardware */
   ++TickCount;          /* flag that it occurred and needs a response */
-	++SysTickCounter;     // keep the free running time going
+  ++SysTickCounter;     // keep the free running time going
 #ifdef LED_DEBUG
-	BlinkLED();
+  BlinkLED();
 #endif
 }
 
@@ -146,13 +145,13 @@ void SysTickIntHandler(void)
     wrapper for access to SysTickCounter, needed to move increment of tick
     counter to this module to keep the timer ticking during blocking code
  Notes
-     
+
  Author
     Ed Carryer, 10/27/14 13:55
 ****************************************************************************/
 uint16_t _HW_GetTickCount(void)
 {
-   return (SysTickCounter);
+  return SysTickCounter;
 }
 
 /****************************************************************************
@@ -165,7 +164,7 @@ uint16_t _HW_GetTickCount(void)
  Description
      processes any pending interrupts (actually the hardware interrupt already
      occurred and simply set a flag to tell this routine to execute the non-
-     hardware response) 
+     hardware response)
  Notes
      While this routine technically does not need a return value, we always
      return true so that it can be used in the conditional while() loop in
@@ -176,15 +175,15 @@ uint16_t _HW_GetTickCount(void)
  Author
      J. Edward Carryer, 08/13/13 13:27
 ****************************************************************************/
-bool _HW_Process_Pending_Ints( void )
+bool _HW_Process_Pending_Ints(void)
 {
-   while (TickCount > 0)
-   {
-      /* call the framework tick response to actually run the timers */
-      ES_Timer_Tick_Resp();  
-      TickCount--;
-   }
-   return true; // always return true to allow loop test in ES_Run to proceed
+  while (TickCount > 0)
+  {
+    /* call the framework tick response to actually run the timers */
+    ES_Timer_Tick_Resp();
+    TickCount--;
+  }
+  return true;  // always return true to allow loop test in ES_Run to proceed
 }
 
 /****************************************************************************
@@ -195,34 +194,31 @@ bool _HW_Process_Pending_Ints( void )
  Returns
      none.
  Description
-	TBD
+  TBD
  Notes
-	TBD
+  TBD
  Author
      John Alabi, 03/05/14 15:07
  ****************************************************************************/
 void ConsoleInit(void)
 {
-	// Enable designated port that will be used for the UART
-	SysCtlPeripheralEnable( SYSCTL_PERIPH_GPIOA );
+  // Enable designated port that will be used for the UART
+  SysCtlPeripheralEnable( SYSCTL_PERIPH_GPIOA);
 
-	// Enable the designated UART
-	SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+  // Enable the designated UART
+  SysCtlPeripheralEnable( SYSCTL_PERIPH_UART0);
 
-	// Configure pins for UART including setup for alternate (UART) functionality
-	GPIOPinConfigure(GPIO_PA0_U0RX);
-	GPIOPinConfigure(GPIO_PA1_U0TX);
-	GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+  // Configure pins for UART including setup for alternate (UART) functionality
+  GPIOPinConfigure( GPIO_PA0_U0RX);
+  GPIOPinConfigure( GPIO_PA1_U0TX);
+  GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 
-	// Select the clock source
-	UARTClockSourceSet(UART0_BASE, UART_CLOCK_PIOSC);
+  // Select the clock source
+  UARTClockSourceSet(UART0_BASE, UART_CLOCK_PIOSC);
 
-	// Initialize the UART for console I/O
-	UARTStdioConfig(UART_PORT, UART_BAUD, SRC_CLK_FREQ);
-
+  // Initialize the UART for console I/O
+  UARTStdioConfig(UART_PORT, UART_BAUD, SRC_CLK_FREQ);
 }
-
-
 
 #if defined(rvmdk) || defined(__ARMCC_VERSION)
 uint32_t CPUgetPRIMASK_cpsid(void)
@@ -230,8 +226,8 @@ uint32_t CPUgetPRIMASK_cpsid(void)
   register uint32_t r0;
   __asm
   {
-    mrs     r0, PRIMASK;	  // Store PRIMASK in r0
-    cpsid   i;				      // Disable interrupts
+    mrs   r0, PRIMASK;      // Store PRIMASK in r0
+    cpsid i;                // Disable interrupts
   }
   return r0;
 }
@@ -240,10 +236,9 @@ void CPUsetPRIMASK(uint32_t newPRIMASK)
 {
   __asm
   {
-    msr     PRIMASK, newPRIMASK		  // Store newPRIMASK in PRIMASK
+    msr PRIMASK, newPRIMASK         // Store newPRIMASK in PRIMASK
   }
 }
-
 
 #endif
 
@@ -257,23 +252,22 @@ void CPUsetPRIMASK(uint32_t newPRIMASK)
  Description
      Initializes the port lines for framework/application debugging
  Notes
-     
+
  Author
      J. Edward Carryer, 08/21/17 11:51
 ****************************************************************************/
 void _HW_DebugLines_Init(void)
 {
-	// enable clock to the debug port
+  // enable clock to the debug port
   HWREG(SYSCTL_RCGCGPIO) |= DEBUG_PORT_ENABLE_BIT;
   while ((HWREG(SYSCTL_PRGPIO) & DEBUG_PORT_ENABLE_BIT) != DEBUG_PORT_ENABLE_BIT)
+  {
     ; // wait for port to be ready
- 
+  }
   // set the debug pins as digital
-  HWREG(DEBUG_PORT+GPIO_O_DEN) |= DEBUG_PORT_WHICH_BITS;
+  HWREG(DEBUG_PORT + GPIO_O_DEN) |= DEBUG_PORT_WHICH_BITS;
   // set pins as outputs
-  HWREG(DEBUG_PORT+GPIO_O_DIR) |= DEBUG_PORT_WHICH_BITS;
-  
- 
+  HWREG(DEBUG_PORT + GPIO_O_DIR) |= DEBUG_PORT_WHICH_BITS;
 }
 
 /****************************************************************************
@@ -286,15 +280,13 @@ void _HW_DebugLines_Init(void)
  Description
      Sets debug Line1 to be a 1
  Notes
-     
+
  Author
      J. Edward Carryer, 08/21/17 13:23
 ****************************************************************************/
 void _HW_DebugSetLine1(void)
 {
-
-  HWREG(DEBUG_PORT+(GPIO_O_DATA + ALL_BITS)) |= DEBUG_LINE_1;
-
+  HWREG(DEBUG_PORT + (GPIO_O_DATA + ALL_BITS)) |= DEBUG_LINE_1;
 }
 
 /****************************************************************************
@@ -307,15 +299,13 @@ void _HW_DebugSetLine1(void)
  Description
      Sets debug Line1 to be a 0
  Notes
-     
+
  Author
      J. Edward Carryer, 08/21/17 13:23
 ****************************************************************************/
 void _HW_DebugClearLine1(void)
 {
-
-  HWREG(DEBUG_PORT+(GPIO_O_DATA + ALL_BITS)) &= ~DEBUG_LINE_1;
-
+  HWREG(DEBUG_PORT + (GPIO_O_DATA + ALL_BITS)) &= ~DEBUG_LINE_1;
 }
 
 /****************************************************************************
@@ -328,15 +318,13 @@ void _HW_DebugClearLine1(void)
  Description
      Sets debug Line1 to be a 1
  Notes
-     
+
  Author
      J. Edward Carryer, 08/21/17 13:25
 ****************************************************************************/
 void _HW_DebugSetLine2(void)
 {
-
-  HWREG(DEBUG_PORT+(GPIO_O_DATA + ALL_BITS)) |= DEBUG_LINE_2;
-
+  HWREG(DEBUG_PORT + (GPIO_O_DATA + ALL_BITS)) |= DEBUG_LINE_2;
 }
 
 /****************************************************************************
@@ -349,14 +337,12 @@ void _HW_DebugSetLine2(void)
  Description
      Sets debug Line1 to be a 0
  Notes
-     
+
  Author
      J. Edward Carryer, 08/21/17 13:26
 ****************************************************************************/
 void _HW_DebugClearLine2(void)
 {
-
-  HWREG(DEBUG_PORT+(GPIO_O_DATA + ALL_BITS)) &= ~DEBUG_LINE_2;
-
+  HWREG(DEBUG_PORT + (GPIO_O_DATA + ALL_BITS)) &= ~DEBUG_LINE_2;
 }
 

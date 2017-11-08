@@ -19,11 +19,10 @@
 
 #include "ES_Types.h"
 
-typedef bool CheckFunc( void );
+typedef bool CheckFunc (void);
 
 typedef CheckFunc (*pCheckFunc);
 
-bool ES_CheckUserEvents( void );
-
+bool ES_CheckUserEvents(void);
 
 #endif  // ES_CheckEvents_H

@@ -4,20 +4,20 @@
 //
 // Copyright (c) 2007-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
-// 
+//
 // Texas Instruments (TI) is supplying this software for use solely and
 // exclusively on TI's microcontroller products. The software is owned by
 // TI and/or its suppliers, and is protected under applicable copyright
 // laws. You may not combine this software with "viral" open-source
 // software in order to form a larger program.
-// 
+//
 // THIS SOFTWARE IS PROVIDED "AS IS" AND WITH ALL FAULTS.
 // NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT
 // NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
 // A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. TI SHALL NOT, UNDER ANY
 // CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
 // DAMAGES, FOR ANY REASON WHATSOEVER.
-// 
+//
 // This is part of revision 2.0.1.11577 of the Tiva Utility Library.
 //
 //*****************************************************************************
@@ -69,9 +69,9 @@ static bool g_bDisableEcho;
 // g_ui32UARTTxWriteIndex.  Buffer is empty if the two indices are the same.
 //
 //*****************************************************************************
-static unsigned char g_pcUARTTxBuffer[UART_TX_BUFFER_SIZE];
-static volatile uint32_t g_ui32UARTTxWriteIndex = 0;
-static volatile uint32_t g_ui32UARTTxReadIndex = 0;
+static unsigned char      g_pcUARTTxBuffer[UART_TX_BUFFER_SIZE];
+static volatile uint32_t  g_ui32UARTTxWriteIndex  = 0;
+static volatile uint32_t  g_ui32UARTTxReadIndex   = 0;
 
 //*****************************************************************************
 //
@@ -79,43 +79,43 @@ static volatile uint32_t g_ui32UARTTxReadIndex = 0;
 // g_ui32UARTTxWriteIndex.  Buffer is empty if the two indices are the same.
 //
 //*****************************************************************************
-static unsigned char g_pcUARTRxBuffer[UART_RX_BUFFER_SIZE];
-static volatile uint32_t g_ui32UARTRxWriteIndex = 0;
-static volatile uint32_t g_ui32UARTRxReadIndex = 0;
+static unsigned char      g_pcUARTRxBuffer[UART_RX_BUFFER_SIZE];
+static volatile uint32_t  g_ui32UARTRxWriteIndex  = 0;
+static volatile uint32_t  g_ui32UARTRxReadIndex   = 0;
 
 //*****************************************************************************
 //
 // Macros to determine number of free and used bytes in the transmit buffer.
 //
 //*****************************************************************************
-#define TX_BUFFER_USED          (GetBufferCount(&g_ui32UARTTxReadIndex,  \
-                                                &g_ui32UARTTxWriteIndex, \
-                                                UART_TX_BUFFER_SIZE))
-#define TX_BUFFER_FREE          (UART_TX_BUFFER_SIZE - TX_BUFFER_USED)
-#define TX_BUFFER_EMPTY         (IsBufferEmpty(&g_ui32UARTTxReadIndex,   \
-                                               &g_ui32UARTTxWriteIndex))
-#define TX_BUFFER_FULL          (IsBufferFull(&g_ui32UARTTxReadIndex,  \
-                                              &g_ui32UARTTxWriteIndex, \
-                                              UART_TX_BUFFER_SIZE))
+#define TX_BUFFER_USED (GetBufferCount(&g_ui32UARTTxReadIndex,  \
+        &g_ui32UARTTxWriteIndex, \
+        UART_TX_BUFFER_SIZE))
+#define TX_BUFFER_FREE (UART_TX_BUFFER_SIZE - TX_BUFFER_USED)
+#define TX_BUFFER_EMPTY (IsBufferEmpty(&g_ui32UARTTxReadIndex,   \
+        &g_ui32UARTTxWriteIndex))
+#define TX_BUFFER_FULL (IsBufferFull(&g_ui32UARTTxReadIndex,  \
+        &g_ui32UARTTxWriteIndex, \
+        UART_TX_BUFFER_SIZE))
 #define ADVANCE_TX_BUFFER_INDEX(Index) \
-                                (Index) = ((Index) + 1) % UART_TX_BUFFER_SIZE
+  (Index) = ((Index) + 1) % UART_TX_BUFFER_SIZE
 
 //*****************************************************************************
 //
 // Macros to determine number of free and used bytes in the receive buffer.
 //
 //*****************************************************************************
-#define RX_BUFFER_USED          (GetBufferCount(&g_ui32UARTRxReadIndex,  \
-                                                &g_ui32UARTRxWriteIndex, \
-                                                UART_RX_BUFFER_SIZE))
-#define RX_BUFFER_FREE          (UART_RX_BUFFER_SIZE - RX_BUFFER_USED)
-#define RX_BUFFER_EMPTY         (IsBufferEmpty(&g_ui32UARTRxReadIndex,   \
-                                               &g_ui32UARTRxWriteIndex))
-#define RX_BUFFER_FULL          (IsBufferFull(&g_ui32UARTRxReadIndex,  \
-                                              &g_ui32UARTRxWriteIndex, \
-                                              UART_RX_BUFFER_SIZE))
+#define RX_BUFFER_USED (GetBufferCount(&g_ui32UARTRxReadIndex,  \
+        &g_ui32UARTRxWriteIndex, \
+        UART_RX_BUFFER_SIZE))
+#define RX_BUFFER_FREE (UART_RX_BUFFER_SIZE - RX_BUFFER_USED)
+#define RX_BUFFER_EMPTY (IsBufferEmpty(&g_ui32UARTRxReadIndex,   \
+        &g_ui32UARTRxWriteIndex))
+#define RX_BUFFER_FULL (IsBufferFull(&g_ui32UARTRxReadIndex,  \
+        &g_ui32UARTRxWriteIndex, \
+        UART_RX_BUFFER_SIZE))
 #define ADVANCE_RX_BUFFER_INDEX(Index) \
-                                (Index) = ((Index) + 1) % UART_RX_BUFFER_SIZE
+  (Index) = ((Index) + 1) % UART_RX_BUFFER_SIZE
 #endif
 
 //*****************************************************************************
@@ -131,7 +131,7 @@ static uint32_t g_ui32Base = 0;
 // equivalent.
 //
 //*****************************************************************************
-static const char * const g_pcHex = "0123456789abcdef";
+static const char *const g_pcHex = "0123456789abcdef";
 
 //*****************************************************************************
 //
@@ -140,7 +140,7 @@ static const char * const g_pcHex = "0123456789abcdef";
 //*****************************************************************************
 static const uint32_t g_ui32UARTBase[3] =
 {
-    UART0_BASE, UART1_BASE, UART2_BASE
+  UART0_BASE, UART1_BASE, UART2_BASE
 };
 
 #ifdef UART_BUFFERED
@@ -151,7 +151,7 @@ static const uint32_t g_ui32UARTBase[3] =
 //*****************************************************************************
 static const uint32_t g_ui32UARTInt[3] =
 {
-    INT_UART0, INT_UART1, INT_UART2
+  INT_UART0, INT_UART1, INT_UART2
 };
 
 //*****************************************************************************
@@ -169,7 +169,7 @@ static uint32_t g_ui32PortNum;
 //*****************************************************************************
 static const uint32_t g_ui32UARTPeriph[3] =
 {
-    SYSCTL_PERIPH_UART0, SYSCTL_PERIPH_UART1, SYSCTL_PERIPH_UART2
+  SYSCTL_PERIPH_UART0, SYSCTL_PERIPH_UART1, SYSCTL_PERIPH_UART2
 };
 
 //*****************************************************************************
@@ -190,18 +190,17 @@ static const uint32_t g_ui32UARTPeriph[3] =
 //
 //*****************************************************************************
 #ifdef UART_BUFFERED
-static bool
-IsBufferFull(volatile uint32_t *pui32Read,
-             volatile uint32_t *pui32Write, uint32_t ui32Size)
+static bool IsBufferFull(volatile uint32_t *pui32Read, volatile uint32_t *pui32Write, uint32_t ui32Size)
 {
-    uint32_t ui32Write;
-    uint32_t ui32Read;
+  uint32_t  ui32Write;
+  uint32_t  ui32Read;
 
-    ui32Write = *pui32Write;
-    ui32Read = *pui32Read;
+  ui32Write = *pui32Write;
+  ui32Read  = *pui32Read;
 
-    return((((ui32Write + 1) % ui32Size) == ui32Read) ? true : false);
+  return (((ui32Write + 1) % ui32Size) == ui32Read) ? true : false;
 }
+
 #endif
 
 //*****************************************************************************
@@ -221,18 +220,17 @@ IsBufferFull(volatile uint32_t *pui32Read,
 //
 //*****************************************************************************
 #ifdef UART_BUFFERED
-static bool
-IsBufferEmpty(volatile uint32_t *pui32Read,
-              volatile uint32_t *pui32Write)
+static bool IsBufferEmpty(volatile uint32_t *pui32Read, volatile uint32_t *pui32Write)
 {
-    uint32_t ui32Write;
-    uint32_t ui32Read;
+  uint32_t  ui32Write;
+  uint32_t  ui32Read;
 
-    ui32Write = *pui32Write;
-    ui32Read = *pui32Read;
+  ui32Write = *pui32Write;
+  ui32Read  = *pui32Read;
 
-    return((ui32Write == ui32Read) ? true : false);
+  return (ui32Write == ui32Read) ? true : false;
 }
+
 #endif
 
 //*****************************************************************************
@@ -252,19 +250,18 @@ IsBufferEmpty(volatile uint32_t *pui32Read,
 //
 //*****************************************************************************
 #ifdef UART_BUFFERED
-static uint32_t
-GetBufferCount(volatile uint32_t *pui32Read,
-               volatile uint32_t *pui32Write, uint32_t ui32Size)
+static uint32_t GetBufferCount(volatile uint32_t *pui32Read, volatile uint32_t *pui32Write, uint32_t ui32Size)
 {
-    uint32_t ui32Write;
-    uint32_t ui32Read;
+  uint32_t  ui32Write;
+  uint32_t  ui32Read;
 
-    ui32Write = *pui32Write;
-    ui32Read = *pui32Read;
+  ui32Write = *pui32Write;
+  ui32Read  = *pui32Read;
 
-    return((ui32Write >= ui32Read) ? (ui32Write - ui32Read) :
-           (ui32Size - (ui32Read - ui32Write)));
+  return (ui32Write >= ui32Read) ? (ui32Write - ui32Read) :
+         (ui32Size - (ui32Read - ui32Write));
 }
+
 #endif
 
 //*****************************************************************************
@@ -274,37 +271,37 @@ GetBufferCount(volatile uint32_t *pui32Read,
 //
 //*****************************************************************************
 #ifdef UART_BUFFERED
-static void
-UARTPrimeTransmit(uint32_t ui32Base)
+static void UARTPrimeTransmit(uint32_t ui32Base)
 {
+  //
+  // Do we have any data to transmit?
+  //
+  if (!TX_BUFFER_EMPTY)
+  {
     //
-    // Do we have any data to transmit?
+    // Disable the UART interrupt.  If we don't do this there is a race
+    // condition which can cause the read index to be corrupted.
     //
-    if(!TX_BUFFER_EMPTY)
+    MAP_IntDisable(g_ui32UARTInt[g_ui32PortNum]);
+
+    //
+    // Yes - take some characters out of the transmit buffer and feed
+    // them to the UART transmit FIFO.
+    //
+    while (MAP_UARTSpaceAvail(ui32Base) && !TX_BUFFER_EMPTY)
     {
-        //
-        // Disable the UART interrupt.  If we don't do this there is a race
-        // condition which can cause the read index to be corrupted.
-        //
-        MAP_IntDisable(g_ui32UARTInt[g_ui32PortNum]);
-
-        //
-        // Yes - take some characters out of the transmit buffer and feed
-        // them to the UART transmit FIFO.
-        //
-        while(MAP_UARTSpaceAvail(ui32Base) && !TX_BUFFER_EMPTY)
-        {
-            MAP_UARTCharPutNonBlocking(ui32Base,
-                                      g_pcUARTTxBuffer[g_ui32UARTTxReadIndex]);
-            ADVANCE_TX_BUFFER_INDEX(g_ui32UARTTxReadIndex);
-        }
-
-        //
-        // Reenable the UART interrupt.
-        //
-        MAP_IntEnable(g_ui32UARTInt[g_ui32PortNum]);
+      MAP_UARTCharPutNonBlocking(ui32Base,
+          g_pcUARTTxBuffer[g_ui32UARTTxReadIndex]);
+      ADVANCE_TX_BUFFER_INDEX(g_ui32UARTTxReadIndex);
     }
+
+    //
+    // Reenable the UART interrupt.
+    //
+    MAP_IntEnable(g_ui32UARTInt[g_ui32PortNum]);
+  }
 }
+
 #endif
 
 //*****************************************************************************
@@ -330,80 +327,79 @@ UARTPrimeTransmit(uint32_t ui32Base)
 //! \return None.
 //
 //*****************************************************************************
-void
-UARTStdioConfig(uint32_t ui32PortNum, uint32_t ui32Baud, uint32_t ui32SrcClock)
+void UARTStdioConfig(uint32_t ui32PortNum, uint32_t ui32Baud, uint32_t ui32SrcClock)
 {
-    //
-    // Check the arguments.
-    //
-    ASSERT((ui32PortNum == 0) || (ui32PortNum == 1) ||
-           (ui32PortNum == 2));
+  //
+  // Check the arguments.
+  //
+  ASSERT((ui32PortNum == 0) || (ui32PortNum == 1) ||
+      (ui32PortNum == 2));
 
 #ifdef UART_BUFFERED
-    //
-    // In buffered mode, we only allow a single instance to be opened.
-    //
-    ASSERT(g_ui32Base == 0);
+  //
+  // In buffered mode, we only allow a single instance to be opened.
+  //
+  ASSERT(g_ui32Base == 0);
 #endif
 
-    //
-    // Check to make sure the UART peripheral is present.
-    //
-    if(!MAP_SysCtlPeripheralPresent(g_ui32UARTPeriph[ui32PortNum]))
-    {
-        return;
-    }
+  //
+  // Check to make sure the UART peripheral is present.
+  //
+  if (!MAP_SysCtlPeripheralPresent(g_ui32UARTPeriph[ui32PortNum]))
+  {
+    return;
+  }
 
-    //
-    // Select the base address of the UART.
-    //
-    g_ui32Base = g_ui32UARTBase[ui32PortNum];
+  //
+  // Select the base address of the UART.
+  //
+  g_ui32Base = g_ui32UARTBase[ui32PortNum];
 
-    //
-    // Enable the UART peripheral for use.
-    //
-    MAP_SysCtlPeripheralEnable(g_ui32UARTPeriph[ui32PortNum]);
+  //
+  // Enable the UART peripheral for use.
+  //
+  MAP_SysCtlPeripheralEnable(g_ui32UARTPeriph[ui32PortNum]);
 
-    //
-    // Configure the UART for 115200, n, 8, 1
-    //
-    MAP_UARTConfigSetExpClk(g_ui32Base, ui32SrcClock, ui32Baud,
-                            (UART_CONFIG_PAR_NONE | UART_CONFIG_STOP_ONE |
-                             UART_CONFIG_WLEN_8));
+  //
+  // Configure the UART for 115200, n, 8, 1
+  //
+  MAP_UARTConfigSetExpClk(g_ui32Base, ui32SrcClock, ui32Baud,
+      (UART_CONFIG_PAR_NONE | UART_CONFIG_STOP_ONE |
+        UART_CONFIG_WLEN_8));
 
 #ifdef UART_BUFFERED
-    //
-    // Set the UART to interrupt whenever the TX FIFO is almost empty or
-    // when any character is received.
-    //
-    MAP_UARTFIFOLevelSet(g_ui32Base, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
+  //
+  // Set the UART to interrupt whenever the TX FIFO is almost empty or
+  // when any character is received.
+  //
+  MAP_UARTFIFOLevelSet(g_ui32Base, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
 
-    //
-    // Flush both the buffers.
-    //
-    UARTFlushRx();
-    UARTFlushTx(true);
+  //
+  // Flush both the buffers.
+  //
+  UARTFlushRx();
+  UARTFlushTx(true);
 
-    //
-    // Remember which interrupt we are dealing with.
-    //
-    g_ui32PortNum = ui32PortNum;
+  //
+  // Remember which interrupt we are dealing with.
+  //
+  g_ui32PortNum = ui32PortNum;
 
-    //
-    // We are configured for buffered output so enable the master interrupt
-    // for this UART and the receive interrupts.  We don't actually enable the
-    // transmit interrupt in the UART itself until some data has been placed
-    // in the transmit buffer.
-    //
-    MAP_UARTIntDisable(g_ui32Base, 0xFFFFFFFF);
-    MAP_UARTIntEnable(g_ui32Base, UART_INT_RX | UART_INT_RT);
-    MAP_IntEnable(g_ui32UARTInt[ui32PortNum]);
+  //
+  // We are configured for buffered output so enable the master interrupt
+  // for this UART and the receive interrupts.  We don't actually enable the
+  // transmit interrupt in the UART itself until some data has been placed
+  // in the transmit buffer.
+  //
+  MAP_UARTIntDisable(g_ui32Base, 0xFFFFFFFF);
+  MAP_UARTIntEnable(g_ui32Base, UART_INT_RX | UART_INT_RT);
+  MAP_IntEnable(g_ui32UARTInt[ui32PortNum]);
 #endif
 
-    //
-    // Enable the UART operation.
-    //
-    MAP_UARTEnable(g_ui32Base);
+  //
+  // Enable the UART operation.
+  //
+  MAP_UARTEnable(g_ui32Base);
 }
 
 //*****************************************************************************
@@ -432,107 +428,106 @@ UARTStdioConfig(uint32_t ui32PortNum, uint32_t ui32Baud, uint32_t ui32SrcClock)
 //! \return Returns the count of characters written.
 //
 //*****************************************************************************
-int
-UARTwrite(const char *pcBuf, uint32_t ui32Len)
+int UARTwrite(const char *pcBuf, uint32_t ui32Len)
 {
 #ifdef UART_BUFFERED
-    unsigned int uIdx;
+  unsigned int uIdx;
 
-    //
-    // Check for valid arguments.
-    //
-    ASSERT(pcBuf != 0);
-    ASSERT(g_ui32Base != 0);
+  //
+  // Check for valid arguments.
+  //
+  ASSERT( pcBuf != 0);
+  ASSERT( g_ui32Base != 0);
 
+  //
+  // Send the characters
+  //
+  for (uIdx = 0; uIdx < ui32Len; uIdx++)
+  {
     //
-    // Send the characters
+    // If the character to the UART is \n, then add a \r before it so that
+    // \n is translated to \n\r in the output.
     //
-    for(uIdx = 0; uIdx < ui32Len; uIdx++)
+    if (pcBuf[uIdx] == '\n')
     {
+      if (!TX_BUFFER_FULL)
+      {
+        g_pcUARTTxBuffer[g_ui32UARTTxWriteIndex] = '\r';
+        ADVANCE_TX_BUFFER_INDEX(g_ui32UARTTxWriteIndex);
+      }
+      else
+      {
         //
-        // If the character to the UART is \n, then add a \r before it so that
-        // \n is translated to \n\r in the output.
+        // Buffer is full - discard remaining characters and return.
         //
-        if(pcBuf[uIdx] == '\n')
-        {
-            if(!TX_BUFFER_FULL)
-            {
-                g_pcUARTTxBuffer[g_ui32UARTTxWriteIndex] = '\r';
-                ADVANCE_TX_BUFFER_INDEX(g_ui32UARTTxWriteIndex);
-            }
-            else
-            {
-                //
-                // Buffer is full - discard remaining characters and return.
-                //
-                break;
-            }
-        }
-
-        //
-        // Send the character to the UART output.
-        //
-        if(!TX_BUFFER_FULL)
-        {
-            g_pcUARTTxBuffer[g_ui32UARTTxWriteIndex] = pcBuf[uIdx];
-            ADVANCE_TX_BUFFER_INDEX(g_ui32UARTTxWriteIndex);
-        }
-        else
-        {
-            //
-            // Buffer is full - discard remaining characters and return.
-            //
-            break;
-        }
+        break;
+      }
     }
 
     //
-    // If we have anything in the buffer, make sure that the UART is set
-    // up to transmit it.
+    // Send the character to the UART output.
     //
-    if(!TX_BUFFER_EMPTY)
+    if (!TX_BUFFER_FULL)
     {
-        UARTPrimeTransmit(g_ui32Base);
-        MAP_UARTIntEnable(g_ui32Base, UART_INT_TX);
+      g_pcUARTTxBuffer[g_ui32UARTTxWriteIndex] = pcBuf[uIdx];
+        ADVANCE_TX_BUFFER_INDEX(g_ui32UARTTxWriteIndex);
     }
+    else
+    {
+      //
+      // Buffer is full - discard remaining characters and return.
+      //
+      break;
+    }
+  }
 
-    //
-    // Return the number of characters written.
-    //
-    return(uIdx);
+  //
+  // If we have anything in the buffer, make sure that the UART is set
+  // up to transmit it.
+  //
+  if (!TX_BUFFER_EMPTY)
+  {
+    UARTPrimeTransmit(g_ui32Base);
+    MAP_UARTIntEnable(g_ui32Base, UART_INT_TX);
+  }
+
+  //
+  // Return the number of characters written.
+  //
+  return uIdx;
 #else
-    unsigned int uIdx;
+  unsigned int uIdx;
 
-    //
-    // Check for valid UART base address, and valid arguments.
-    //
-    ASSERT(g_ui32Base != 0);
-    ASSERT(pcBuf != 0);
+  //
+  // Check for valid UART base address, and valid arguments.
+  //
+  ASSERT( g_ui32Base != 0);
+  ASSERT( pcBuf != 0);
 
+  //
+  // Send the characters
+  //
+  for (uIdx = 0; uIdx < ui32Len; uIdx++)
+  {
     //
-    // Send the characters
+    // If the character to the UART is \n, then add a \r before it so that
+    // \n is translated to \n\r in the output.
     //
-    for(uIdx = 0; uIdx < ui32Len; uIdx++)
+    if (pcBuf[uIdx] == '\n')
     {
-        //
-        // If the character to the UART is \n, then add a \r before it so that
-        // \n is translated to \n\r in the output.
-        //
-        if(pcBuf[uIdx] == '\n')
-        {
-            MAP_UARTCharPut(g_ui32Base, '\r');
-        }
-
-        //
-        // Send the character to the UART output.
-        //
-        MAP_UARTCharPut(g_ui32Base, pcBuf[uIdx]);
+      MAP_UARTCharPut(g_ui32Base, '\r');
     }
 
     //
-    // Return the number of characters written.
+    // Send the character to the UART output.
     //
-    return(uIdx);
+      MAP_UARTCharPut(g_ui32Base, pcBuf[uIdx]);
+  }
+
+  //
+  // Return the number of characters written.
+  //
+  return uIdx;
 #endif
 }
 
@@ -565,205 +560,204 @@ UARTwrite(const char *pcBuf, uint32_t ui32Len)
 //! the trailing 0.
 //
 //*****************************************************************************
-int
-UARTgets(char *pcBuf, uint32_t ui32Len)
+int UARTgets(char *pcBuf, uint32_t ui32Len)
 {
 #ifdef UART_BUFFERED
-    uint32_t ui32Count = 0;
-    int8_t cChar;
+  uint32_t  ui32Count = 0;
+  int8_t    cChar;
 
-    //
-    // Check the arguments.
-    //
-    ASSERT(pcBuf != 0);
-    ASSERT(ui32Len != 0);
-    ASSERT(g_ui32Base != 0);
+  //
+  // Check the arguments.
+  //
+  ASSERT( pcBuf != 0);
+  ASSERT( ui32Len != 0);
+  ASSERT( g_ui32Base != 0);
 
-    //
-    // Adjust the length back by 1 to leave space for the trailing
-    // null terminator.
-    //
-    ui32Len--;
+  //
+  // Adjust the length back by 1 to leave space for the trailing
+  // null terminator.
+  //
+  ui32Len--;
 
+  //
+  // Process characters until a newline is received.
+  //
+  while (1)
+  {
     //
-    // Process characters until a newline is received.
+    // Read the next character from the receive buffer.
     //
-    while(1)
+    if (!RX_BUFFER_EMPTY)
     {
+      cChar = g_pcUARTRxBuffer[g_ui32UARTRxReadIndex];
+      ADVANCE_RX_BUFFER_INDEX(g_ui32UARTRxReadIndex);
+
+      //
+      // See if a newline or escape character was received.
+      //
+      if ((cChar == '\r') || (cChar == '\n') || (cChar == 0x1b))
+      {
         //
-        // Read the next character from the receive buffer.
+        // Stop processing the input and end the line.
         //
-        if(!RX_BUFFER_EMPTY)
-        {
-            cChar = g_pcUARTRxBuffer[g_ui32UARTRxReadIndex];
-            ADVANCE_RX_BUFFER_INDEX(g_ui32UARTRxReadIndex);
+        break;
+      }
 
-            //
-            // See if a newline or escape character was received.
-            //
-            if((cChar == '\r') || (cChar == '\n') || (cChar == 0x1b))
-            {
-                //
-                // Stop processing the input and end the line.
-                //
-                break;
-            }
+      //
+      // Process the received character as long as we are not at the end
+      // of the buffer.  If the end of the buffer has been reached then
+      // all additional characters are ignored until a newline is
+      // received.
+      //
+      if (ui32Count < ui32Len)
+      {
+        //
+        // Store the character in the caller supplied buffer.
+        //
+        pcBuf[ui32Count] = cChar;
 
-            //
-            // Process the received character as long as we are not at the end
-            // of the buffer.  If the end of the buffer has been reached then
-            // all additional characters are ignored until a newline is
-            // received.
-            //
-            if(ui32Count < ui32Len)
-            {
-                //
-                // Store the character in the caller supplied buffer.
-                //
-                pcBuf[ui32Count] = cChar;
-
-                //
-                // Increment the count of characters received.
-                //
-                ui32Count++;
-            }
-        }
+        //
+        // Increment the count of characters received.
+        //
+        ui32Count++;
+      }
     }
+  }
 
-    //
-    // Add a null termination to the string.
-    //
-    pcBuf[ui32Count] = 0;
+  //
+  // Add a null termination to the string.
+  //
+  pcBuf[ui32Count] = 0;
 
-    //
-    // Return the count of int8_ts in the buffer, not counting the trailing 0.
-    //
-    return(ui32Count);
+  //
+  // Return the count of int8_ts in the buffer, not counting the trailing 0.
+  //
+  return ui32Count;
 #else
-    uint32_t ui32Count = 0;
-    int8_t cChar;
-    static int8_t bLastWasCR = 0;
+  uint32_t      ui32Count = 0;
+  int8_t        cChar;
+  static int8_t bLastWasCR = 0;
+
+  //
+  // Check the arguments.
+  //
+  ASSERT( pcBuf != 0);
+  ASSERT( ui32Len != 0);
+  ASSERT( g_ui32Base != 0);
+
+  //
+  // Adjust the length back by 1 to leave space for the trailing
+  // null terminator.
+  //
+  ui32Len--;
+
+  //
+  // Process characters until a newline is received.
+  //
+  while (1)
+  {
+    //
+    // Read the next character from the console.
+    //
+    cChar = MAP_UARTCharGet(g_ui32Base);
 
     //
-    // Check the arguments.
+    // See if the backspace key was pressed.
     //
-    ASSERT(pcBuf != 0);
-    ASSERT(ui32Len != 0);
-    ASSERT(g_ui32Base != 0);
-
-    //
-    // Adjust the length back by 1 to leave space for the trailing
-    // null terminator.
-    //
-    ui32Len--;
-
-    //
-    // Process characters until a newline is received.
-    //
-    while(1)
+    if (cChar == '\b')
     {
+      //
+      // If there are any characters already in the buffer, then delete
+      // the last.
+      //
+      if (ui32Count)
+      {
         //
-        // Read the next character from the console.
+        // Rub out the previous character.
         //
-        cChar = MAP_UARTCharGet(g_ui32Base);
+        UARTwrite("\b \b", 3);
 
         //
-        // See if the backspace key was pressed.
+        // Decrement the number of characters in the buffer.
         //
-        if(cChar == '\b')
-        {
-            //
-            // If there are any characters already in the buffer, then delete
-            // the last.
-            //
-            if(ui32Count)
-            {
-                //
-                // Rub out the previous character.
-                //
-                UARTwrite("\b \b", 3);
+        ui32Count--;
+      }
 
-                //
-                // Decrement the number of characters in the buffer.
-                //
-                ui32Count--;
-            }
-
-            //
-            // Skip ahead to read the next character.
-            //
-            continue;
-        }
-
-        //
-        // If this character is LF and last was CR, then just gobble up the
-        // character because the EOL processing was taken care of with the CR.
-        //
-        if((cChar == '\n') && bLastWasCR)
-        {
-            bLastWasCR = 0;
-            continue;
-        }
-
-        //
-        // See if a newline or escape character was received.
-        //
-        if((cChar == '\r') || (cChar == '\n') || (cChar == 0x1b))
-        {
-            //
-            // If the character is a CR, then it may be followed by a LF which
-            // should be paired with the CR.  So remember that a CR was
-            // received.
-            //
-            if(cChar == '\r')
-            {
-                bLastWasCR = 1;
-            }
-
-            //
-            // Stop processing the input and end the line.
-            //
-            break;
-        }
-
-        //
-        // Process the received character as long as we are not at the end of
-        // the buffer.  If the end of the buffer has been reached then all
-        // additional characters are ignored until a newline is received.
-        //
-        if(ui32Count < ui32Len)
-        {
-            //
-            // Store the character in the caller supplied buffer.
-            //
-            pcBuf[ui32Count] = cChar;
-
-            //
-            // Increment the count of characters received.
-            //
-            ui32Count++;
-
-            //
-            // Reflect the character back to the user.
-            //
-            MAP_UARTCharPut(g_ui32Base, cChar);
-        }
+      //
+      // Skip ahead to read the next character.
+      //
+      continue;
     }
 
     //
-    // Add a null termination to the string.
+    // If this character is LF and last was CR, then just gobble up the
+    // character because the EOL processing was taken care of with the CR.
     //
-    pcBuf[ui32Count] = 0;
+    if ((cChar == '\n') && bLastWasCR)
+    {
+      bLastWasCR = 0;
+      continue;
+    }
 
     //
-    // Send a CRLF pair to the terminal to end the line.
+    // See if a newline or escape character was received.
     //
-    UARTwrite("\r\n", 2);
+    if ((cChar == '\r') || (cChar == '\n') || (cChar == 0x1b))
+    {
+      //
+      // If the character is a CR, then it may be followed by a LF which
+      // should be paired with the CR.  So remember that a CR was
+      // received.
+      //
+      if (cChar == '\r')
+      {
+        bLastWasCR = 1;
+      }
+
+      //
+      // Stop processing the input and end the line.
+      //
+      break;
+    }
 
     //
-    // Return the count of int8_ts in the buffer, not counting the trailing 0.
+    // Process the received character as long as we are not at the end of
+    // the buffer.  If the end of the buffer has been reached then all
+    // additional characters are ignored until a newline is received.
     //
-    return(ui32Count);
+    if (ui32Count < ui32Len)
+    {
+      //
+      // Store the character in the caller supplied buffer.
+      //
+      pcBuf[ui32Count] = cChar;
+
+      //
+      // Increment the count of characters received.
+      //
+      ui32Count++;
+
+      //
+      // Reflect the character back to the user.
+      //
+      MAP_UARTCharPut(g_ui32Base, cChar);
+    }
+  }
+
+  //
+  // Add a null termination to the string.
+  //
+  pcBuf[ui32Count] = 0;
+
+  //
+  // Send a CRLF pair to the terminal to end the line.
+  //
+  UARTwrite("\r\n", 2);
+
+  //
+  // Return the count of int8_ts in the buffer, not counting the trailing 0.
+  //
+  return ui32Count;
 #endif
 }
 
@@ -782,39 +776,38 @@ UARTgets(char *pcBuf, uint32_t ui32Len)
 //! \return Returns the character read.
 //
 //*****************************************************************************
-unsigned char
-UARTgetc(void)
+unsigned char UARTgetc(void)
 {
 #ifdef UART_BUFFERED
-    unsigned char cChar;
+  unsigned char cChar;
 
+  //
+  // Wait for a character to be received.
+  //
+  while (RX_BUFFER_EMPTY)
+  {
     //
-    // Wait for a character to be received.
+    // Block waiting for a character to be received (if the buffer is
+    // currently empty).
     //
-    while(RX_BUFFER_EMPTY)
-    {
-        //
-        // Block waiting for a character to be received (if the buffer is
-        // currently empty).
-        //
-    }
+  }
 
-    //
-    // Read a character from the buffer.
-    //
-    cChar = g_pcUARTRxBuffer[g_ui32UARTRxReadIndex];
-    ADVANCE_RX_BUFFER_INDEX(g_ui32UARTRxReadIndex);
+  //
+  // Read a character from the buffer.
+  //
+  cChar = g_pcUARTRxBuffer[g_ui32UARTRxReadIndex];
+  ADVANCE_RX_BUFFER_INDEX(g_ui32UARTRxReadIndex);
 
-    //
-    // Return the character to the caller.
-    //
-    return(cChar);
+  //
+  // Return the character to the caller.
+  //
+  return cChar;
 #else
-    //
-    // Block until a character is received by the UART then return it to
-    // the caller.
-    //
-    return(MAP_UARTCharGet(g_ui32Base));
+  //
+  // Block until a character is received by the UART then return it to
+  // the caller.
+  //
+  return MAP_UARTCharGet(g_ui32Base);
 #endif
 }
 
@@ -856,398 +849,394 @@ UARTgetc(void)
 //! \return None.
 //
 //*****************************************************************************
-void
-UARTvprintf(const char *pcString, va_list vaArgP)
+void UARTvprintf(const char *pcString, va_list vaArgP)
 {
-    uint32_t ui32Idx, ui32Value, ui32Pos, ui32Count, ui32Base, ui32Neg;
-    char *pcStr, pcBuf[16], cFill;
+  uint32_t  ui32Idx, ui32Value, ui32Pos, ui32Count, ui32Base, ui32Neg;
+  char      *pcStr, pcBuf[16], cFill;
+
+  //
+  // Check the arguments.
+  //
+  ASSERT(pcString != 0);
+
+  //
+  // Loop while there are more characters in the string.
+  //
+  while (*pcString)
+  {
+    //
+    // Find the first non-% character, or the end of the string.
+    //
+    for (ui32Idx = 0;
+        (pcString[ui32Idx] != '%') && (pcString[ui32Idx] != '\0');
+        ui32Idx++)
+    {}
 
     //
-    // Check the arguments.
+    // Write this portion of the string.
     //
-    ASSERT(pcString != 0);
+              UARTwrite(pcString, ui32Idx);
 
     //
-    // Loop while there are more characters in the string.
+    // Skip the portion of the string that was written.
     //
-    while(*pcString)
+    pcString += ui32Idx;
+
+    //
+    // See if the next character is a %.
+    //
+    if (*pcString == '%')
     {
-        //
-        // Find the first non-% character, or the end of the string.
-        //
-        for(ui32Idx = 0;
-            (pcString[ui32Idx] != '%') && (pcString[ui32Idx] != '\0');
-            ui32Idx++)
-        {
-        }
+      //
+      // Skip the %.
+      //
+      pcString++;
 
-        //
-        // Write this portion of the string.
-        //
-        UARTwrite(pcString, ui32Idx);
+      //
+      // Set the digit count to zero, and the fill character to space
+      // (in other words, to the defaults).
+      //
+      ui32Count = 0;
+      cFill     = ' ';
 
-        //
-        // Skip the portion of the string that was written.
-        //
-        pcString += ui32Idx;
-
-        //
-        // See if the next character is a %.
-        //
-        if(*pcString == '%')
-        {
-            //
-            // Skip the %.
-            //
-            pcString++;
-
-            //
-            // Set the digit count to zero, and the fill character to space
-            // (in other words, to the defaults).
-            //
-            ui32Count = 0;
-            cFill = ' ';
-
-            //
-            // It may be necessary to get back here to process more characters.
-            // Goto's aren't pretty, but effective.  I feel extremely dirty for
-            // using not one but two of the beasts.
-            //
+      //
+      // It may be necessary to get back here to process more characters.
+      // Goto's aren't pretty, but effective.  I feel extremely dirty for
+      // using not one but two of the beasts.
+      //
 again:
 
-            //
-            // Determine how to handle the next character.
-            //
-            switch(*pcString++)
-            {
-                //
-                // Handle the digit characters.
-                //
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                {
-                    //
-                    // If this is a zero, and it is the first digit, then the
-                    // fill character is a zero instead of a space.
-                    //
-                    if((pcString[-1] == '0') && (ui32Count == 0))
-                    {
-                        cFill = '0';
-                    }
+      //
+      // Determine how to handle the next character.
+      //
+      switch (*pcString++)
+      {
+        //
+        // Handle the digit characters.
+        //
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        {
+          //
+          // If this is a zero, and it is the first digit, then the
+          // fill character is a zero instead of a space.
+          //
+          if ((pcString[-1] == '0') && (ui32Count == 0))
+          {
+            cFill = '0';
+          }
 
-                    //
-                    // Update the digit count.
-                    //
-                    ui32Count *= 10;
-                    ui32Count += pcString[-1] - '0';
+          //
+          // Update the digit count.
+          //
+          ui32Count *= 10;
+          ui32Count += pcString[-1] - '0';
 
-                    //
-                    // Get the next character.
-                    //
-                    goto again;
-                }
-
-                //
-                // Handle the %c command.
-                //
-                case 'c':
-                {
-                    //
-                    // Get the value from the varargs.
-                    //
-                    ui32Value = va_arg(vaArgP, uint32_t);
-
-                    //
-                    // Print out the character.
-                    //
-                    UARTwrite((char *)&ui32Value, 1);
-
-                    //
-                    // This command has been handled.
-                    //
-                    break;
-                }
-
-                //
-                // Handle the %d and %i commands.
-                //
-                case 'd':
-                case 'i':
-                {
-                    //
-                    // Get the value from the varargs.
-                    //
-                    ui32Value = va_arg(vaArgP, uint32_t);
-
-                    //
-                    // Reset the buffer position.
-                    //
-                    ui32Pos = 0;
-
-                    //
-                    // If the value is negative, make it positive and indicate
-                    // that a minus sign is needed.
-                    //
-                    if((int32_t)ui32Value < 0)
-                    {
-                        //
-                        // Make the value positive.
-                        //
-                        ui32Value = -(int32_t)ui32Value;
-
-                        //
-                        // Indicate that the value is negative.
-                        //
-                        ui32Neg = 1;
-                    }
-                    else
-                    {
-                        //
-                        // Indicate that the value is positive so that a minus
-                        // sign isn't inserted.
-                        //
-                        ui32Neg = 0;
-                    }
-
-                    //
-                    // Set the base to 10.
-                    //
-                    ui32Base = 10;
-
-                    //
-                    // Convert the value to ASCII.
-                    //
-                    goto convert;
-                }
-
-                //
-                // Handle the %s command.
-                //
-                case 's':
-                {
-                    //
-                    // Get the string pointer from the varargs.
-                    //
-                    pcStr = va_arg(vaArgP, char *);
-
-                    //
-                    // Determine the length of the string.
-                    //
-                    for(ui32Idx = 0; pcStr[ui32Idx] != '\0'; ui32Idx++)
-                    {
-                    }
-
-                    //
-                    // Write the string.
-                    //
-                    UARTwrite(pcStr, ui32Idx);
-
-                    //
-                    // Write any required padding spaces
-                    //
-                    if(ui32Count > ui32Idx)
-                    {
-                        ui32Count -= ui32Idx;
-                        while(ui32Count--)
-                        {
-                            UARTwrite(" ", 1);
-                        }
-                    }
-
-                    //
-                    // This command has been handled.
-                    //
-                    break;
-                }
-
-                //
-                // Handle the %u command.
-                //
-                case 'u':
-                {
-                    //
-                    // Get the value from the varargs.
-                    //
-                    ui32Value = va_arg(vaArgP, uint32_t);
-
-                    //
-                    // Reset the buffer position.
-                    //
-                    ui32Pos = 0;
-
-                    //
-                    // Set the base to 10.
-                    //
-                    ui32Base = 10;
-
-                    //
-                    // Indicate that the value is positive so that a minus sign
-                    // isn't inserted.
-                    //
-                    ui32Neg = 0;
-
-                    //
-                    // Convert the value to ASCII.
-                    //
-                    goto convert;
-                }
-
-                //
-                // Handle the %x and %X commands.  Note that they are treated
-                // identically; in other words, %X will use lower case letters
-                // for a-f instead of the upper case letters it should use.  We
-                // also alias %p to %x.
-                //
-                case 'x':
-                case 'X':
-                case 'p':
-                {
-                    //
-                    // Get the value from the varargs.
-                    //
-                    ui32Value = va_arg(vaArgP, uint32_t);
-
-                    //
-                    // Reset the buffer position.
-                    //
-                    ui32Pos = 0;
-
-                    //
-                    // Set the base to 16.
-                    //
-                    ui32Base = 16;
-
-                    //
-                    // Indicate that the value is positive so that a minus sign
-                    // isn't inserted.
-                    //
-                    ui32Neg = 0;
-
-                    //
-                    // Determine the number of digits in the string version of
-                    // the value.
-                    //
-convert:
-                    for(ui32Idx = 1;
-                        (((ui32Idx * ui32Base) <= ui32Value) &&
-                         (((ui32Idx * ui32Base) / ui32Base) == ui32Idx));
-                        ui32Idx *= ui32Base, ui32Count--)
-                    {
-                    }
-
-                    //
-                    // If the value is negative, reduce the count of padding
-                    // characters needed.
-                    //
-                    if(ui32Neg)
-                    {
-                        ui32Count--;
-                    }
-
-                    //
-                    // If the value is negative and the value is padded with
-                    // zeros, then place the minus sign before the padding.
-                    //
-                    if(ui32Neg && (cFill == '0'))
-                    {
-                        //
-                        // Place the minus sign in the output buffer.
-                        //
-                        pcBuf[ui32Pos++] = '-';
-
-                        //
-                        // The minus sign has been placed, so turn off the
-                        // negative flag.
-                        //
-                        ui32Neg = 0;
-                    }
-
-                    //
-                    // Provide additional padding at the beginning of the
-                    // string conversion if needed.
-                    //
-                    if((ui32Count > 1) && (ui32Count < 16))
-                    {
-                        for(ui32Count--; ui32Count; ui32Count--)
-                        {
-                            pcBuf[ui32Pos++] = cFill;
-                        }
-                    }
-
-                    //
-                    // If the value is negative, then place the minus sign
-                    // before the number.
-                    //
-                    if(ui32Neg)
-                    {
-                        //
-                        // Place the minus sign in the output buffer.
-                        //
-                        pcBuf[ui32Pos++] = '-';
-                    }
-
-                    //
-                    // Convert the value into a string.
-                    //
-                    for(; ui32Idx; ui32Idx /= ui32Base)
-                    {
-                        pcBuf[ui32Pos++] =
-                            g_pcHex[(ui32Value / ui32Idx) % ui32Base];
-                    }
-
-                    //
-                    // Write the string.
-                    //
-                    UARTwrite(pcBuf, ui32Pos);
-
-                    //
-                    // This command has been handled.
-                    //
-                    break;
-                }
-
-                //
-                // Handle the %% command.
-                //
-                case '%':
-                {
-                    //
-                    // Simply write a single %.
-                    //
-                    UARTwrite(pcString - 1, 1);
-
-                    //
-                    // This command has been handled.
-                    //
-                    break;
-                }
-
-                //
-                // Handle all other commands.
-                //
-                default:
-                {
-                    //
-                    // Indicate an error.
-                    //
-                    UARTwrite("ERROR", 5);
-
-                    //
-                    // This command has been handled.
-                    //
-                    break;
-                }
-            }
+          //
+          // Get the next character.
+          //
+          goto again;
         }
+
+        //
+        // Handle the %c command.
+        //
+        case 'c':
+        {
+          //
+          // Get the value from the varargs.
+          //
+          ui32Value = va_arg(vaArgP, uint32_t);
+
+          //
+          // Print out the character.
+          //
+              UARTwrite((char *)&ui32Value, 1);
+
+          //
+          // This command has been handled.
+          //
+          break;
+        }
+
+        //
+        // Handle the %d and %i commands.
+        //
+        case 'd':
+        case 'i':
+        {
+          //
+          // Get the value from the varargs.
+          //
+          ui32Value = va_arg(vaArgP, uint32_t);
+
+          //
+          // Reset the buffer position.
+          //
+          ui32Pos = 0;
+
+          //
+          // If the value is negative, make it positive and indicate
+          // that a minus sign is needed.
+          //
+          if ((int32_t)ui32Value < 0)
+          {
+            //
+            // Make the value positive.
+            //
+            ui32Value = -(int32_t)ui32Value;
+
+            //
+            // Indicate that the value is negative.
+            //
+            ui32Neg = 1;
+          }
+          else
+          {
+            //
+            // Indicate that the value is positive so that a minus
+            // sign isn't inserted.
+            //
+            ui32Neg = 0;
+          }
+
+          //
+          // Set the base to 10.
+          //
+          ui32Base = 10;
+
+          //
+          // Convert the value to ASCII.
+          //
+          goto convert;
+        }
+
+        //
+        // Handle the %s command.
+        //
+        case 's':
+        {
+          //
+          // Get the string pointer from the varargs.
+          //
+          pcStr = va_arg(vaArgP, char *);
+
+          //
+          // Determine the length of the string.
+          //
+          for (ui32Idx = 0; pcStr[ui32Idx] != '\0'; ui32Idx++)
+          {}
+
+          //
+          // Write the string.
+          //
+              UARTwrite(pcStr, ui32Idx);
+
+          //
+          // Write any required padding spaces
+          //
+          if (ui32Count > ui32Idx)
+          {
+            ui32Count -= ui32Idx;
+            while (ui32Count--)
+            {
+              UARTwrite(" ", 1);
+            }
+          }
+
+          //
+          // This command has been handled.
+          //
+          break;
+        }
+
+        //
+        // Handle the %u command.
+        //
+        case 'u':
+        {
+          //
+          // Get the value from the varargs.
+          //
+          ui32Value = va_arg(vaArgP, uint32_t);
+
+          //
+          // Reset the buffer position.
+          //
+          ui32Pos = 0;
+
+          //
+          // Set the base to 10.
+          //
+          ui32Base = 10;
+
+          //
+          // Indicate that the value is positive so that a minus sign
+          // isn't inserted.
+          //
+          ui32Neg = 0;
+
+          //
+          // Convert the value to ASCII.
+          //
+          goto convert;
+        }
+
+        //
+        // Handle the %x and %X commands.  Note that they are treated
+        // identically; in other words, %X will use lower case letters
+        // for a-f instead of the upper case letters it should use.  We
+        // also alias %p to %x.
+        //
+        case 'x':
+        case 'X':
+        case 'p':
+        {
+          //
+          // Get the value from the varargs.
+          //
+          ui32Value = va_arg(vaArgP, uint32_t);
+
+          //
+          // Reset the buffer position.
+          //
+          ui32Pos = 0;
+
+          //
+          // Set the base to 16.
+          //
+          ui32Base = 16;
+
+          //
+          // Indicate that the value is positive so that a minus sign
+          // isn't inserted.
+          //
+          ui32Neg = 0;
+
+          //
+          // Determine the number of digits in the string version of
+          // the value.
+          //
+convert:
+          for (ui32Idx = 1;
+              (((ui32Idx * ui32Base) <= ui32Value) &&
+                (((ui32Idx * ui32Base) / ui32Base) == ui32Idx));
+              ui32Idx *= ui32Base, ui32Count--)
+          {}
+
+          //
+          // If the value is negative, reduce the count of padding
+          // characters needed.
+          //
+          if (ui32Neg)
+          {
+            ui32Count--;
+          }
+
+          //
+          // If the value is negative and the value is padded with
+          // zeros, then place the minus sign before the padding.
+          //
+          if (ui32Neg && (cFill == '0'))
+          {
+            //
+            // Place the minus sign in the output buffer.
+            //
+            pcBuf[ui32Pos++] = '-';
+
+            //
+            // The minus sign has been placed, so turn off the
+            // negative flag.
+            //
+            ui32Neg = 0;
+          }
+
+          //
+          // Provide additional padding at the beginning of the
+          // string conversion if needed.
+          //
+          if ((ui32Count > 1) && (ui32Count < 16))
+          {
+            for (ui32Count--; ui32Count; ui32Count--)
+            {
+              pcBuf[ui32Pos++] = cFill;
+            }
+          }
+
+          //
+          // If the value is negative, then place the minus sign
+          // before the number.
+          //
+          if (ui32Neg)
+          {
+            //
+            // Place the minus sign in the output buffer.
+            //
+            pcBuf[ui32Pos++] = '-';
+          }
+
+          //
+          // Convert the value into a string.
+          //
+          for ( ; ui32Idx; ui32Idx /= ui32Base)
+          {
+            pcBuf[ui32Pos++] =
+                g_pcHex[(ui32Value / ui32Idx) % ui32Base];
+          }
+
+          //
+          // Write the string.
+          //
+              UARTwrite(pcBuf, ui32Pos);
+
+          //
+          // This command has been handled.
+          //
+          break;
+        }
+
+        //
+        // Handle the %% command.
+        //
+        case '%':
+        {
+          //
+          // Simply write a single %.
+          //
+              UARTwrite(pcString - 1, 1);
+
+          //
+          // This command has been handled.
+          //
+          break;
+        }
+
+        //
+        // Handle all other commands.
+        //
+        default:
+        {
+          //
+          // Indicate an error.
+          //
+              UARTwrite("ERROR", 5);
+
+          //
+          // This command has been handled.
+          //
+          break;
+        }
+      }
     }
+  }
 }
 
 //*****************************************************************************
@@ -1288,22 +1277,21 @@ convert:
 //! \return None.
 //
 //*****************************************************************************
-void
-UARTprintf(const char *pcString, ...)
+void UARTprintf(const char *pcString, ...)
 {
-    va_list vaArgP;
+  va_list vaArgP;
 
-    //
-    // Start the varargs processing.
-    //
-    va_start(vaArgP, pcString);
+  //
+  // Start the varargs processing.
+  //
+  va_start(vaArgP, pcString);
 
-    UARTvprintf(pcString, vaArgP);
+  UARTvprintf(pcString, vaArgP);
 
-    //
-    // We're finished with the varargs now.
-    //
-    va_end(vaArgP);
+  //
+  // We're finished with the varargs now.
+  //
+  va_end(vaArgP);
 }
 
 //*****************************************************************************
@@ -1318,11 +1306,11 @@ UARTprintf(const char *pcString, ...)
 //
 //*****************************************************************************
 #if defined(UART_BUFFERED) || defined(DOXYGEN)
-int
-UARTRxBytesAvail(void)
+int UARTRxBytesAvail(void)
 {
-    return(RX_BUFFER_USED);
+  return RX_BUFFER_USED;
 }
+
 #endif
 
 #if defined(UART_BUFFERED) || defined(DOXYGEN)
@@ -1337,11 +1325,11 @@ UARTRxBytesAvail(void)
 //! \return Returns the number of free bytes.
 //
 //*****************************************************************************
-int
-UARTTxBytesFree(void)
+int UARTTxBytesFree(void)
 {
-    return(TX_BUFFER_FREE);
+  return TX_BUFFER_FREE;
 }
+
 #endif
 
 //*****************************************************************************
@@ -1364,46 +1352,46 @@ UARTTxBytesFree(void)
 //
 //*****************************************************************************
 #if defined(UART_BUFFERED) || defined(DOXYGEN)
-int
-UARTPeek(unsigned char ucChar)
+int UARTPeek(unsigned char ucChar)
 {
-    int iCount;
-    int iAvail;
-    uint32_t ui32ReadIndex;
+  int       iCount;
+  int       iAvail;
+  uint32_t  ui32ReadIndex;
 
-    //
-    // How many characters are there in the receive buffer?
-    //
-    iAvail = (int)RX_BUFFER_USED;
-    ui32ReadIndex = g_ui32UARTRxReadIndex;
+  //
+  // How many characters are there in the receive buffer?
+  //
+  iAvail        = (int)RX_BUFFER_USED;
+  ui32ReadIndex = g_ui32UARTRxReadIndex;
 
-    //
-    // Check all the unread characters looking for the one passed.
-    //
-    for(iCount = 0; iCount < iAvail; iCount++)
+  //
+  // Check all the unread characters looking for the one passed.
+  //
+  for (iCount = 0; iCount < iAvail; iCount++)
+  {
+    if (g_pcUARTRxBuffer[ui32ReadIndex] == ucChar)
     {
-        if(g_pcUARTRxBuffer[ui32ReadIndex] == ucChar)
-        {
-            //
-            // We found it so return the index
-            //
-            return(iCount);
-        }
-        else
-        {
-            //
-            // This one didn't match so move on to the next character.
-            //
-            ADVANCE_RX_BUFFER_INDEX(ui32ReadIndex);
-        }
+      //
+      // We found it so return the index
+      //
+      return iCount;
     }
+    else
+    {
+      //
+      // This one didn't match so move on to the next character.
+      //
+      ADVANCE_RX_BUFFER_INDEX(ui32ReadIndex);
+    }
+  }
 
-    //
-    // If we drop out of the loop, we didn't find the character in the receive
-    // buffer.
-    //
-    return(-1);
+  //
+  // If we drop out of the loop, we didn't find the character in the receive
+  // buffer.
+  //
+  return -1;
 }
+
 #endif
 
 //*****************************************************************************
@@ -1418,31 +1406,31 @@ UARTPeek(unsigned char ucChar)
 //
 //*****************************************************************************
 #if defined(UART_BUFFERED) || defined(DOXYGEN)
-void
-UARTFlushRx(void)
+void UARTFlushRx(void)
 {
-    uint32_t ui32Int;
+  uint32_t ui32Int;
 
-    //
-    // Temporarily turn off interrupts.
-    //
-    ui32Int = MAP_IntMasterDisable();
+  //
+  // Temporarily turn off interrupts.
+  //
+  ui32Int = MAP_IntMasterDisable();
 
-    //
-    // Flush the receive buffer.
-    //
-    g_ui32UARTRxReadIndex = 0;
-    g_ui32UARTRxWriteIndex = 0;
+  //
+  // Flush the receive buffer.
+  //
+  g_ui32UARTRxReadIndex   = 0;
+  g_ui32UARTRxWriteIndex  = 0;
 
-    //
-    // If interrupts were enabled when we turned them off, turn them
-    // back on again.
-    //
-    if(!ui32Int)
-    {
-        MAP_IntMasterEnable();
-    }
+  //
+  // If interrupts were enabled when we turned them off, turn them
+  // back on again.
+  //
+  if (!ui32Int)
+  {
+      MAP_IntMasterEnable();
+  }
 }
+
 #endif
 
 //*****************************************************************************
@@ -1462,47 +1450,46 @@ UARTFlushRx(void)
 //
 //*****************************************************************************
 #if defined(UART_BUFFERED) || defined(DOXYGEN)
-void
-UARTFlushTx(bool bDiscard)
+void UARTFlushTx(bool bDiscard)
 {
-    uint32_t ui32Int;
+  uint32_t ui32Int;
+
+  //
+  // Should the remaining data be discarded or transmitted?
+  //
+  if (bDiscard)
+  {
+    //
+    // The remaining data should be discarded, so temporarily turn off
+    // interrupts.
+    //
+    ui32Int = MAP_IntMasterDisable();
 
     //
-    // Should the remaining data be discarded or transmitted?
+    // Flush the transmit buffer.
     //
-    if(bDiscard)
-    {
-        //
-        // The remaining data should be discarded, so temporarily turn off
-        // interrupts.
-        //
-        ui32Int = MAP_IntMasterDisable();
+    g_ui32UARTTxReadIndex   = 0;
+    g_ui32UARTTxWriteIndex  = 0;
 
-        //
-        // Flush the transmit buffer.
-        //
-        g_ui32UARTTxReadIndex = 0;
-        g_ui32UARTTxWriteIndex = 0;
-
-        //
-        // If interrupts were enabled when we turned them off, turn them
-        // back on again.
-        //
-        if(!ui32Int)
-        {
-            MAP_IntMasterEnable();
-        }
-    }
-    else
+    //
+    // If interrupts were enabled when we turned them off, turn them
+    // back on again.
+    //
+    if (!ui32Int)
     {
-        //
-        // Wait for all remaining data to be transmitted before returning.
-        //
-        while(!TX_BUFFER_EMPTY)
-        {
-        }
+      MAP_IntMasterEnable();
     }
+  }
+  else
+  {
+    //
+    // Wait for all remaining data to be transmitted before returning.
+    //
+    while (!TX_BUFFER_EMPTY)
+    {}
+  }
 }
+
 #endif
 
 //*****************************************************************************
@@ -1526,11 +1513,11 @@ UARTFlushTx(bool bDiscard)
 //
 //*****************************************************************************
 #if defined(UART_BUFFERED) || defined(DOXYGEN)
-void
-UARTEchoSet(bool bEnable)
+void UARTEchoSet(bool bEnable)
 {
-    g_bDisableEcho = !bEnable;
+  g_bDisableEcho = !bEnable;
 }
+
 #endif
 
 //*****************************************************************************
@@ -1546,170 +1533,170 @@ UARTEchoSet(bool bEnable)
 //
 //*****************************************************************************
 #if defined(UART_BUFFERED) || defined(DOXYGEN)
-void
-UARTStdioIntHandler(void)
+void UARTStdioIntHandler(void)
 {
-    uint32_t ui32Ints;
-    int8_t cChar;
-    int32_t i32Char;
-    static bool bLastWasCR = false;
+  uint32_t    ui32Ints;
+  int8_t      cChar;
+  int32_t     i32Char;
+  static bool bLastWasCR = false;
+
+  //
+  // Get and clear the current interrupt source(s)
+  //
+  ui32Ints = MAP_UARTIntStatus(g_ui32Base, true);
+  MAP_UARTIntClear(g_ui32Base, ui32Ints);
+
+  //
+  // Are we being interrupted because the TX FIFO has space available?
+  //
+  if (ui32Ints & UART_INT_TX)
+  {
+    //
+    // Move as many bytes as we can into the transmit FIFO.
+    //
+    UARTPrimeTransmit(g_ui32Base);
 
     //
-    // Get and clear the current interrupt source(s)
+    // If the output buffer is empty, turn off the transmit interrupt.
     //
-    ui32Ints = MAP_UARTIntStatus(g_ui32Base, true);
-    MAP_UARTIntClear(g_ui32Base, ui32Ints);
-
-    //
-    // Are we being interrupted because the TX FIFO has space available?
-    //
-    if(ui32Ints & UART_INT_TX)
+    if (TX_BUFFER_EMPTY)
     {
-        //
-        // Move as many bytes as we can into the transmit FIFO.
-        //
-        UARTPrimeTransmit(g_ui32Base);
-
-        //
-        // If the output buffer is empty, turn off the transmit interrupt.
-        //
-        if(TX_BUFFER_EMPTY)
-        {
-            MAP_UARTIntDisable(g_ui32Base, UART_INT_TX);
-        }
+      MAP_UARTIntDisable(g_ui32Base, UART_INT_TX);
     }
+  }
 
+  //
+  // Are we being interrupted due to a received character?
+  //
+  if (ui32Ints & (UART_INT_RX | UART_INT_RT))
+  {
     //
-    // Are we being interrupted due to a received character?
+    // Get all the available characters from the UART.
     //
-    if(ui32Ints & (UART_INT_RX | UART_INT_RT))
+    while (MAP_UARTCharsAvail(g_ui32Base))
     {
+      //
+      // Read a character
+      //
+      i32Char = MAP_UARTCharGetNonBlocking(g_ui32Base);
+      cChar   = (unsigned char)(i32Char & 0xFF);
+
+      //
+      // If echo is disabled, we skip the various text filtering
+      // operations that would typically be required when supporting a
+      // command line.
+      //
+      if (!g_bDisableEcho)
+      {
         //
-        // Get all the available characters from the UART.
+        // Handle backspace by erasing the last character in the
+        // buffer.
         //
-        while(MAP_UARTCharsAvail(g_ui32Base))
+        if (cChar == '\b')
         {
+          //
+          // If there are any characters already in the buffer, then
+          // delete the last.
+          //
+          if (!RX_BUFFER_EMPTY)
+          {
             //
-            // Read a character
+            // Rub out the previous character on the users
+            // terminal.
             //
-            i32Char = MAP_UARTCharGetNonBlocking(g_ui32Base);
-            cChar = (unsigned char)(i32Char & 0xFF);
+            UARTwrite("\b \b", 3);
 
             //
-            // If echo is disabled, we skip the various text filtering
-            // operations that would typically be required when supporting a
-            // command line.
+            // Decrement the number of characters in the buffer.
             //
-            if(!g_bDisableEcho)
+            if (g_ui32UARTRxWriteIndex == 0)
             {
-                //
-                // Handle backspace by erasing the last character in the
-                // buffer.
-                //
-                if(cChar == '\b')
-                {
-                    //
-                    // If there are any characters already in the buffer, then
-                    // delete the last.
-                    //
-                    if(!RX_BUFFER_EMPTY)
-                    {
-                        //
-                        // Rub out the previous character on the users
-                        // terminal.
-                        //
-                        UARTwrite("\b \b", 3);
-
-                        //
-                        // Decrement the number of characters in the buffer.
-                        //
-                        if(g_ui32UARTRxWriteIndex == 0)
-                        {
-                            g_ui32UARTRxWriteIndex = UART_RX_BUFFER_SIZE - 1;
-                        }
-                        else
-                        {
-                            g_ui32UARTRxWriteIndex--;
-                        }
-                    }
-
-                    //
-                    // Skip ahead to read the next character.
-                    //
-                    continue;
-                }
-
-                //
-                // If this character is LF and last was CR, then just gobble up
-                // the character since we already echoed the previous CR and we
-                // don't want to store 2 characters in the buffer if we don't
-                // need to.
-                //
-                if((cChar == '\n') && bLastWasCR)
-                {
-                    bLastWasCR = false;
-                    continue;
-                }
-
-                //
-                // See if a newline or escape character was received.
-                //
-                if((cChar == '\r') || (cChar == '\n') || (cChar == 0x1b))
-                {
-                    //
-                    // If the character is a CR, then it may be followed by an
-                    // LF which should be paired with the CR.  So remember that
-                    // a CR was received.
-                    //
-                    if(cChar == '\r')
-                    {
-                        bLastWasCR = 1;
-                    }
-
-                    //
-                    // Regardless of the line termination character received,
-                    // put a CR in the receive buffer as a marker telling
-                    // UARTgets() where the line ends.  We also send an
-                    // additional LF to ensure that the local terminal echo
-                    // receives both CR and LF.
-                    //
-                    cChar = '\r';
-                    UARTwrite("\n", 1);
-                }
+              g_ui32UARTRxWriteIndex = UART_RX_BUFFER_SIZE - 1;
             }
-
-            //
-            // If there is space in the receive buffer, put the character
-            // there, otherwise throw it away.
-            //
-            if(!RX_BUFFER_FULL)
+            else
             {
-                //
-                // Store the new character in the receive buffer
-                //
-                g_pcUARTRxBuffer[g_ui32UARTRxWriteIndex] =
-                    (unsigned char)(i32Char & 0xFF);
-                ADVANCE_RX_BUFFER_INDEX(g_ui32UARTRxWriteIndex);
-
-                //
-                // If echo is enabled, write the character to the transmit
-                // buffer so that the user gets some immediate feedback.
-                //
-                if(!g_bDisableEcho)
-                {
-                    UARTwrite((const char *)&cChar, 1);
-                }
+              g_ui32UARTRxWriteIndex--;
             }
+          }
+
+          //
+          // Skip ahead to read the next character.
+          //
+          continue;
         }
 
         //
-        // If we wrote anything to the transmit buffer, make sure it actually
-        // gets transmitted.
+        // If this character is LF and last was CR, then just gobble up
+        // the character since we already echoed the previous CR and we
+        // don't want to store 2 characters in the buffer if we don't
+        // need to.
         //
-        UARTPrimeTransmit(g_ui32Base);
-        MAP_UARTIntEnable(g_ui32Base, UART_INT_TX);
+        if ((cChar == '\n') && bLastWasCR)
+        {
+          bLastWasCR = false;
+          continue;
+        }
+
+        //
+        // See if a newline or escape character was received.
+        //
+        if ((cChar == '\r') || (cChar == '\n') || (cChar == 0x1b))
+        {
+          //
+          // If the character is a CR, then it may be followed by an
+          // LF which should be paired with the CR.  So remember that
+          // a CR was received.
+          //
+          if (cChar == '\r')
+          {
+            bLastWasCR = 1;
+          }
+
+          //
+          // Regardless of the line termination character received,
+          // put a CR in the receive buffer as a marker telling
+          // UARTgets() where the line ends.  We also send an
+          // additional LF to ensure that the local terminal echo
+          // receives both CR and LF.
+          //
+          cChar = '\r';
+            UARTwrite("\n", 1);
+        }
+      }
+
+      //
+      // If there is space in the receive buffer, put the character
+      // there, otherwise throw it away.
+      //
+      if (!RX_BUFFER_FULL)
+      {
+        //
+        // Store the new character in the receive buffer
+        //
+        g_pcUARTRxBuffer[g_ui32UARTRxWriteIndex] =
+            (unsigned char)(i32Char & 0xFF);
+        ADVANCE_RX_BUFFER_INDEX(g_ui32UARTRxWriteIndex);
+
+        //
+        // If echo is enabled, write the character to the transmit
+        // buffer so that the user gets some immediate feedback.
+        //
+        if (!g_bDisableEcho)
+        {
+          UARTwrite((const char *)&cChar, 1);
+        }
+      }
     }
+
+    //
+    // If we wrote anything to the transmit buffer, make sure it actually
+    // gets transmitted.
+    //
+    UARTPrimeTransmit(g_ui32Base);
+    MAP_UARTIntEnable(g_ui32Base, UART_INT_TX);
+  }
 }
+
 #endif
 
 //*****************************************************************************

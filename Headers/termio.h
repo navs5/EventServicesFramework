@@ -44,7 +44,7 @@ int uart_read(int dev_fd, char *buf, unsigned count);
 int uart_write(int dev_fd, const char *buf, unsigned count);
 off_t uart_lseek(int dev_fd, off_t offset, int origin);
 int uart_unlink(const char *path);
-int uart_rename(const char * old_name, const char * new_name);
+int uart_rename(const char *old_name, const char *new_name);
 
 int mapStdioToUart(void);
 

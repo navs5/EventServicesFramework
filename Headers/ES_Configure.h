@@ -5,12 +5,12 @@
      This file contains macro definitions that are edited by the user to
      adapt the Events and Services framework to a particular application.
  Notes
-     
+
  History
  When           Who     What/Why
  -------------- ---     --------
  12/19/16 20:19  jec     removed EVENT_CHECK_HEADER definition. This goes with
-                         the V2.3 move to a single wrapper for event checking 
+                         the V2.3 move to a single wrapper for event checking
                          headers
   10/11/15 18:00 jec     added new event type ES_SHORT_TIMEOUT
   10/21/13 20:54 jec     lots of added entries to bring the number of timers
@@ -25,7 +25,7 @@
 #define ES_CONFIGURE_H
 
 /****************************************************************************/
-// The maximum number of services sets an upper bound on the number of 
+// The maximum number of services sets an upper bound on the number of
 // services that the framework will handle. Reasonable values are 8 and 16
 // corresponding to an 8-bit(uint8_t) and 16-bit(uint16_t) Ready variable size
 #define MAX_NUM_SERVICES 16
@@ -37,8 +37,8 @@
 
 /****************************************************************************/
 // These are the definitions for Service 0, the lowest priority service.
-// Every Events and Services application must have a Service 0. Further 
-// services are added in numeric sequence (1,2,3,...) with increasing 
+// Every Events and Services application must have a Service 0. Further
+// services are added in numeric sequence (1,2,3,...) with increasing
 // priorities
 // the header file with the public function prototypes
 #define SERV_0_HEADER "TestHarnessService0.h"
@@ -51,7 +51,7 @@
 
 /****************************************************************************/
 // The following sections are used to define the parameters for each of the
-// services. You only need to fill out as many as the number of services 
+// services. You only need to fill out as many as the number of services
 // defined by NUM_SERVICES
 /****************************************************************************/
 // These are the definitions for Service 1
@@ -248,53 +248,54 @@
 #define SERV_15_QUEUE_SIZE 3
 #endif
 
-
 /****************************************************************************/
 // Name/define the events of interest
 // Universal events occupy the lowest entries, followed by user-defined events
-typedef enum {  ES_NO_EVENT = 0,
-                ES_ERROR,  /* used to indicate an error from the service */
-                ES_INIT,   /* used to transition from initial pseudo-state */
-                ES_TIMEOUT, /* signals that the timer has expired */
-                ES_SHORT_TIMEOUT, /* signals that a short timer has expired */
-                /* User-defined events start here */
-                ES_NEW_KEY, /* signals a new key received from terminal */
-                ES_LOCK,
-                ES_UNLOCK} ES_EventTyp_t ;
+typedef enum
+{
+  ES_NO_EVENT = 0,
+  ES_ERROR,                 /* used to indicate an error from the service */
+  ES_INIT,                  /* used to transition from initial pseudo-state */
+  ES_TIMEOUT,               /* signals that the timer has expired */
+  ES_SHORT_TIMEOUT,         /* signals that a short timer has expired */
+  /* User-defined events start here */
+  ES_NEW_KEY,               /* signals a new key received from terminal */
+  ES_LOCK,
+  ES_UNLOCK
+}ES_EventTyp_t;
 
 /****************************************************************************/
 // These are the definitions for the Distribution lists. Each definition
 // should be a comma separated list of post functions to indicate which
 // services are on that distribution list.
 #define NUM_DIST_LISTS 1
-#if NUM_DIST_LISTS > 0 
+#if NUM_DIST_LISTS > 0
 #define DIST_LIST0 PostTestHarnessService0, PostTestHarnessService0
 #endif
-#if NUM_DIST_LISTS > 1 
+#if NUM_DIST_LISTS > 1
 #define DIST_LIST1 PostTestHarnessService1, PostTestHarnessService1
 #endif
-#if NUM_DIST_LISTS > 2 
+#if NUM_DIST_LISTS > 2
 #define DIST_LIST2 PostTemplateFSM
 #endif
-#if NUM_DIST_LISTS > 3 
+#if NUM_DIST_LISTS > 3
 #define DIST_LIST3 PostTemplateFSM
 #endif
-#if NUM_DIST_LISTS > 4 
+#if NUM_DIST_LISTS > 4
 #define DIST_LIST4 PostTemplateFSM
 #endif
-#if NUM_DIST_LISTS > 5 
+#if NUM_DIST_LISTS > 5
 #define DIST_LIST5 PostTemplateFSM
 #endif
-#if NUM_DIST_LISTS > 6 
+#if NUM_DIST_LISTS > 6
 #define DIST_LIST6 PostTemplateFSM
 #endif
-#if NUM_DIST_LISTS > 7 
+#if NUM_DIST_LISTS > 7
 #define DIST_LIST7 PostTemplateFSM
 #endif
 
-
 /****************************************************************************/
-// This is the list of event checking functions 
+// This is the list of event checking functions
 #define EVENT_CHECK_LIST Check4Keystroke
 
 /****************************************************************************/
@@ -326,10 +327,9 @@ typedef enum {  ES_NO_EVENT = 0,
 // to different timers if the need arises. Keep these definitions close to the
 // definitions for the response functions to make it easier to check that
 // the timer number matches where the timer event will be routed
-// These symbolic names should be changed to be relevant to your application 
+// These symbolic names should be changed to be relevant to your application
 
 #define SERVICE0_TIMER 15
-
 
 /**************************************************************************/
 // uncomment this ine to get some basic framework operation debugging on

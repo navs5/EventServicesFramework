@@ -1,6 +1,6 @@
 /****************************************************************************
- 
-  Header file for Test Harness Service0 
+
+  Header file for Test Harness Service0
   based on the Gen 2 Events and Services Framework
 
  ****************************************************************************/
@@ -15,10 +15,9 @@
 
 // Public Function Prototypes
 
-bool InitTestHarnessService0 ( uint8_t Priority );
-bool PostTestHarnessService0( ES_Event ThisEvent );
-ES_Event RunTestHarnessService0( ES_Event ThisEvent );
-
+bool InitTestHarnessService0(uint8_t Priority);
+bool PostTestHarnessService0(ES_Event ThisEvent);
+ES_Event RunTestHarnessService0(ES_Event ThisEvent);
 
 #endif /* ServTemplate_H */
 
