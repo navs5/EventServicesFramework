@@ -2,7 +2,7 @@
  Module
      ES_Queue.h
  Description
-     header file for use with the Queue functions of the Events  & Services 
+     header file for use with the Queue functions of the Events  & Services
      Framework
  Notes
 
@@ -22,12 +22,12 @@
 
 /* prototypes for public functions */
 
-uint8_t ES_InitQueue( ES_Event * pBlock, uint8_t BlockSize );
-bool ES_EnQueueFIFO( ES_Event * pBlock, ES_Event Event2Add );
-bool ES_EnQueueLIFO( ES_Event * pBlock, ES_Event Event2Add );
-uint8_t ES_DeQueue( ES_Event * pBlock, ES_Event * pReturnEvent );
+uint8_t ES_InitQueue(ES_Event *pBlock, uint8_t BlockSize);
+bool ES_EnQueueFIFO(ES_Event *pBlock, ES_Event Event2Add);
+bool ES_EnQueueLIFO(ES_Event *pBlock, ES_Event Event2Add);
+uint8_t ES_DeQueue(ES_Event *pBlock, ES_Event *pReturnEvent);
 //void EF_FlushQueue( unsigned char * pBlock );
-bool ES_IsQueueEmpty( ES_Event * pBlock );
+bool ES_IsQueueEmpty(ES_Event *pBlock);
 
 #endif /*ES_Queue_H */
 

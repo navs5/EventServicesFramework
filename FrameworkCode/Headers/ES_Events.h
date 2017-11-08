@@ -2,13 +2,13 @@
  Module
      ES_Events.h
  Description
-     header file with definitions for the event structure 
+     header file with definitions for the event structure
  Notes
 
  History
  When           Who     What/Why
  -------------- ---     --------
- 10/19/17 14:22 jec      changed include to ES_Cpnfigre to get definition of 
+ 10/19/17 14:22 jec      changed include to ES_Cpnfigre to get definition of
                          ES_EventTyp_t
  08/05/13 15:19 jec      modifications to suit new portable type definitions
  01/15/12 11:46 jec      moved event enum to config file, changed prefixes to ES
@@ -24,10 +24,10 @@
 
 #include "ES_Configure.h"
 
-typedef struct ES_Event_t {
-    ES_EventTyp_t EventType;    // what kind of event?
-    uint16_t   EventParam;      // parameter value for use w/ this event
+typedef struct ES_Event_t
+{
+  ES_EventTyp_t EventType;      // what kind of event?
+  uint16_t EventParam;          // parameter value for use w/ this event
 }ES_Event;
-
 
 #endif /* ES_Events_H */

@@ -17,15 +17,16 @@
 #include "ES_General.h"
 #include "ES_CheckEvents.h"
 
-// Include the header files for the module(s) with your event checkers. 
+// Include the header files for the module(s) with your event checkers.
 // This gets you the prototypes for the event checking functions.
 
 #include "ES_EventCheckWrapper.h"
 
 // Fill in this array with the names of your event checking functions
 
-static CheckFunc * const ES_EventList[]={EVENT_CHECK_LIST };
-
+static CheckFunc *const ES_EventList[] = {
+  EVENT_CHECK_LIST
+};
 
 // Implementation for public functions
 
@@ -39,22 +40,30 @@ static CheckFunc * const ES_EventList[]={EVENT_CHECK_LIST };
  Description
    loop through the EF_EventList array executing the event checking functions
  Notes
-   
+
  Author
    J. Edward Carryer, 10/25/11, 08:55
 ****************************************************************************/
-bool ES_CheckUserEvents( void ) 
+bool ES_CheckUserEvents(void)
 {
   uint8_t i;
   // loop through the array executing the event checking functions
-  for ( i=0; i< ARRAY_SIZE(ES_EventList); i++) {
-    if ( ES_EventList[i]() == true )
+  for (i = 0; i < ARRAY_SIZE(ES_EventList); i++)
+  {
+    if (ES_EventList[i]() == true)
+    {
       break; // found a new event, so process it first
+    }
   }
-  if ( i == ARRAY_SIZE(ES_EventList) ) // if no new events
-    return (false);
+  if (i == ARRAY_SIZE(ES_EventList))   // if no new events
+  {
+    return false;
+  }
   else
-    return(true);
+  {
+    return true;
+  }
 }
+
 /*------------------------------- Footnotes -------------------------------*/
 /*------------------------------ End of file ------------------------------*/

@@ -3,8 +3,8 @@
      ES_LookupTables.h
  Description
      Extern declarations for a set of constant lookup tables that are used in
-     multiple places in the framework and beyond. 
-     
+     multiple places in the framework and beyond.
+
  Notes
      As a rule, I don't approve of global variables for a host of reasons.
      In this case I decided to make them global in the interests of
@@ -40,8 +40,8 @@ extern uint16_t const BitNum2SetMask[];
 /*
   this table is used to go from an unsigned 4bit value to the most significant
   bit that is set in that nybble. It is used in the determination of priorities
-  from the Ready variable and in determining active timers in 
-  the timer interrupt response. Index into the array with (ByteVal-1) to get 
+  from the Ready variable and in determining active timers in
+  the timer interrupt response. Index into the array with (ByteVal-1) to get
   the correct MS Bit num.
 */
 extern uint8_t const Nybble2MSBitNum[15];
@@ -56,8 +56,8 @@ extern uint8_t const Nybble2MSBitNum[15];
  Description
    find the MSB that is set in Val2Check and returns that bit number
  Notes
-   
+
  Author
    J. Edward Carryer, 10/20/13, 17:03
 ****************************************************************************/
-uint8_t ES_GetMSBitSet( uint16_t Val2Check);
+uint8_t ES_GetMSBitSet(uint16_t Val2Check);

@@ -42,7 +42,6 @@ static TemplateState_t CurrentState;
 // with the introduction of Gen2, we need a module level Priority var as well
 static uint8_t MyPriority;
 
-
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -62,7 +61,7 @@ static uint8_t MyPriority;
  Author
      J. Edward Carryer, 10/23/11, 18:55
 ****************************************************************************/
-bool InitTemplateFSM ( uint8_t Priority )
+bool InitTemplateFSM(uint8_t Priority)
 {
   ES_Event ThisEvent;
 
@@ -71,12 +70,13 @@ bool InitTemplateFSM ( uint8_t Priority )
   CurrentState = InitPState;
   // post the initial transition event
   ThisEvent.EventType = ES_INIT;
-  if (ES_PostToService( MyPriority, ThisEvent) == true)
+  if (ES_PostToService(MyPriority, ThisEvent) == true)
   {
-      return true;
-  }else
+    return true;
+  }
+  else
   {
-      return false;
+    return false;
   }
 }
 
@@ -97,9 +97,9 @@ bool InitTemplateFSM ( uint8_t Priority )
  Author
      J. Edward Carryer, 10/23/11, 19:25
 ****************************************************************************/
-bool PostTemplateFSM( ES_Event ThisEvent )
+bool PostTemplateFSM(ES_Event ThisEvent)
 {
-  return ES_PostToService( MyPriority, ThisEvent);
+  return ES_PostToService(MyPriority, ThisEvent);
 }
 
 /****************************************************************************
@@ -119,42 +119,46 @@ bool PostTemplateFSM( ES_Event ThisEvent )
  Author
    J. Edward Carryer, 01/15/12, 15:23
 ****************************************************************************/
-ES_Event RunTemplateFSM( ES_Event ThisEvent )
+ES_Event RunTemplateFSM(ES_Event ThisEvent)
 {
   ES_Event ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
-  switch ( CurrentState )
+  switch (CurrentState)
   {
-    case InitPState :       // If current state is initial Psedudo State
-        if ( ThisEvent.EventType == ES_INIT )// only respond to ES_Init
-        {
-            // this is where you would put any actions associated with the
-            // transition from the initial pseudo-state into the actual
-            // initial state
-
-            // now put the machine into the actual initial state
-            CurrentState = UnlockWaiting;
-         }
-         break;
-
-    case UnlockWaiting :       // If current state is state one
-      switch ( ThisEvent.EventType )
+    case InitPState:        // If current state is initial Psedudo State
+    {
+      if (ThisEvent.EventType == ES_INIT)    // only respond to ES_Init
       {
-        case ES_LOCK : //If event is event one
-          
-            // Execute action function for state one : event one
-            CurrentState = Locked;//Decide what the next state will be
-        
-          break;
+        // this is where you would put any actions associated with the
+        // transition from the initial pseudo-state into the actual
+        // initial state
+
+        // now put the machine into the actual initial state
+        CurrentState = UnlockWaiting;
+      }
+    }
+    break;
+
+    case UnlockWaiting:        // If current state is state one
+    {
+      switch (ThisEvent.EventType)
+      {
+        case ES_LOCK:  //If event is event one
+
+        {   // Execute action function for state one : event one
+          CurrentState = Locked;  //Decide what the next state will be
+        }
+        break;
 
         // repeat cases as required for relevant events
-        default :
-            ; 
+        default:
+          ;
       }  // end switch on CurrentEvent
-      break;
+    }
+    break;
     // repeat state pattern as required for other states
-    default :
+    default:
       ;
   }                                   // end switch on Current State
   return ReturnEvent;
@@ -177,9 +181,9 @@ ES_Event RunTemplateFSM( ES_Event ThisEvent )
  Author
      J. Edward Carryer, 10/23/11, 19:21
 ****************************************************************************/
-TemplateState_t QueryTemplateFSM ( void )
+TemplateState_t QueryTemplateFSM(void)
 {
-   return(CurrentState);
+  return CurrentState;
 }
 
 /***************************************************************************

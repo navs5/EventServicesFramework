@@ -2,7 +2,7 @@
  Module
      ES_Types.h
  Description
-     header file to provide generally used types for the Events  & Services 
+     header file to provide generally used types for the Events  & Services
      Framework. Most of these come from stdint.h, and stdbool.h on compilers
      that support C99
  Notes
@@ -25,7 +25,6 @@
 #include "stdint.h"
 #endif
 
-
 /* Standard ANSI  99 C types for booleans, true & false*/
 /* must come after stdint.h because the emulation uses uint8_t */
 #ifdef COMPILER_IS_C99
@@ -33,6 +32,5 @@
 #else   // provide C99 compliant definitions
 #include "stdbool.h"
 #endif
-
 
 #endif /* ES_TYPES_H */
