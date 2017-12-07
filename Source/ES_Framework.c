@@ -53,7 +53,7 @@
 
 /*----------------------------- Module Defines ----------------------------*/
 typedef bool      InitFunc_t (uint8_t Priority);
-typedef ES_Event  RunFunc_t (ES_Event ThisEvent);
+typedef ES_Event_t  RunFunc_t (ES_Event_t ThisEvent);
 
 typedef InitFunc_t  *pInitFunc;
 typedef RunFunc_t   *pRunFunc;
@@ -68,7 +68,7 @@ typedef struct
 
 typedef struct
 {
-  ES_Event *pMem;       // pointer to the memory
+  ES_Event_t *pMem;       // pointer to the memory
   uint8_t Size;         // how big is it
 }ES_QueueDesc_t;
 
@@ -135,51 +135,51 @@ static ES_ServDesc_t const ServDescList[] =
 /****************************************************************************/
 // The queues for the services
 
-static ES_Event Queue0[SERV_0_QUEUE_SIZE + 1];
+static ES_Event_t Queue0[SERV_0_QUEUE_SIZE + 1];
 #if NUM_SERVICES > 1
-static ES_Event Queue1[SERV_1_QUEUE_SIZE + 1];
+static ES_Event_t Queue1[SERV_1_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 2
-static ES_Event Queue2[SERV_2_QUEUE_SIZE + 1];
+static ES_Event_t Queue2[SERV_2_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 3
-static ES_Event Queue3[SERV_3_QUEUE_SIZE + 1];
+static ES_Event_t Queue3[SERV_3_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 4
-static ES_Event Queue4[SERV_4_QUEUE_SIZE + 1];
+static ES_Event_t Queue4[SERV_4_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 5
-static ES_Event Queue5[SERV_5_QUEUE_SIZE + 1];
+static ES_Event_t Queue5[SERV_5_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 6
-static ES_Event Queue6[SERV_6_QUEUE_SIZE + 1];
+static ES_Event_t Queue6[SERV_6_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 7
-static ES_Event Queue7[SERV_7_QUEUE_SIZE + 1];
+static ES_Event_t Queue7[SERV_7_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 8
-static ES_Event Queue8[SERV_8_QUEUE_SIZE + 1];
+static ES_Event_t Queue8[SERV_8_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 9
-static ES_Event Queue9[SERV_9_QUEUE_SIZE + 1];
+static ES_Event_t Queue9[SERV_9_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 10
-static ES_Event Queue10[SERV_10_QUEUE_SIZE + 1];
+static ES_Event_t Queue10[SERV_10_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 11
-static ES_Event Queue11[SERV_11_QUEUE_SIZE + 1];
+static ES_Event_t Queue11[SERV_11_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 12
-static ES_Event Queue12[SERV_12_QUEUE_SIZE + 1];
+static ES_Event_t Queue12[SERV_12_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 13
-static ES_Event Queue13[SERV_13_QUEUE_SIZE + 1];
+static ES_Event_t Queue13[SERV_13_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 14
-static ES_Event Queue14[SERV_14_QUEUE_SIZE + 1];
+static ES_Event_t Queue14[SERV_14_QUEUE_SIZE + 1];
 #endif
 #if NUM_SERVICES > 15
-static ES_Event Queue15[SERV_15_QUEUE_SIZE + 1];
+static ES_Event_t Queue15[SERV_15_QUEUE_SIZE + 1];
 #endif
 
 /****************************************************************************/
@@ -303,7 +303,7 @@ ES_Return_t ES_Run(void)
 {
   // make these static to improve speed
   uint8_t         HighestPrior;
-  static ES_Event ThisEvent;
+  static ES_Event_t ThisEvent;
 
   while (1)  // stay here unless we detect an error condition
   { // loop through the list executing the run functions for services
@@ -354,7 +354,7 @@ ES_Return_t ES_Run(void)
  Author
    J. Edward Carryer, 01/15/12,
 ****************************************************************************/
-bool ES_PostAll(ES_Event ThisEvent)
+bool ES_PostAll(ES_Event_t ThisEvent)
 {
   uint8_t i;
   // loop through the list executing the post functions
@@ -394,7 +394,7 @@ bool ES_PostAll(ES_Event ThisEvent)
  Author
    J. Edward Carryer, 01/16/12,
 ****************************************************************************/
-bool ES_PostToService(uint8_t WhichService, ES_Event TheEvent)
+bool ES_PostToService(uint8_t WhichService, ES_Event_t TheEvent)
 {
   if ((WhichService < ARRAY_SIZE(EventQueues)) &&
       (ES_EnQueueFIFO(EventQueues[WhichService].pMem, TheEvent) ==
@@ -424,7 +424,7 @@ bool ES_PostToService(uint8_t WhichService, ES_Event TheEvent)
  Author
    J. Edward Carryer, 11/02/13
 ****************************************************************************/
-bool ES_PostToServiceLIFO(uint8_t WhichService, ES_Event TheEvent)
+bool ES_PostToServiceLIFO(uint8_t WhichService, ES_Event_t TheEvent)
 {
   if ((WhichService < ARRAY_SIZE(EventQueues)) &&
       (ES_EnQueueLIFO(EventQueues[WhichService].pMem, TheEvent) ==

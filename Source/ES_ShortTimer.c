@@ -145,7 +145,7 @@ void ES_ShortTimerStart(uint32_t Which, uint16_t TimeoutValue)
 
 void ShortTimerAHandler(void)
 {
-  ES_Event ThisEvent;
+  ES_Event_t ThisEvent;
 
 // start by clearing the source of the interrupt
   TimerIntClear(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
@@ -166,7 +166,7 @@ void ShortTimerAHandler(void)
 
 void ShortTimerBHandler(void)
 {
-  ES_Event ThisEvent;
+  ES_Event_t ThisEvent;
 
 // start by clearing the source of the interrupt
   TimerIntClear(TIMER5_BASE, TIMER_TIMB_TIMEOUT);

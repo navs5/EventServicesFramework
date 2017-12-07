@@ -55,7 +55,7 @@ typedef ES_Queue_t *pQueue_t;
  Author
    J. Edward Carryer, 08/09/11, 18:40
 ****************************************************************************/
-uint8_t ES_InitQueue(ES_Event *pBlock, uint8_t BlockSize)
+uint8_t ES_InitQueue(ES_Event_t *pBlock, uint8_t BlockSize)
 {
   pQueue_t pThisQueue;
   // initialize the Queue by setting up initial values for elements
@@ -82,7 +82,7 @@ uint8_t ES_InitQueue(ES_Event *pBlock, uint8_t BlockSize)
   Author
    J. Edward Carryer, 08/09/11, 18:59
 ****************************************************************************/
-bool ES_EnQueueFIFO(ES_Event *pBlock, ES_Event Event2Add)
+bool ES_EnQueueFIFO(ES_Event_t *pBlock, ES_Event_t Event2Add)
 {
   pQueue_t pThisQueue;
   pThisQueue = (pQueue_t)pBlock;
@@ -121,7 +121,7 @@ bool ES_EnQueueFIFO(ES_Event *pBlock, ES_Event Event2Add)
   Author
    J. Edward Carryer, 11/02/13, 14:30
 ****************************************************************************/
-bool ES_EnQueueLIFO(ES_Event *pBlock, ES_Event Event2Add)
+bool ES_EnQueueLIFO(ES_Event_t *pBlock, ES_Event_t Event2Add)
 {
   pQueue_t pThisQueue;
   pThisQueue = (pQueue_t)pBlock;
@@ -166,7 +166,7 @@ bool ES_EnQueueLIFO(ES_Event *pBlock, ES_Event Event2Add)
  Author
    J. Edward Carryer, 08/09/11, 19:11
 ****************************************************************************/
-uint8_t ES_DeQueue(ES_Event *pBlock, ES_Event *pReturnEvent)
+uint8_t ES_DeQueue(ES_Event_t *pBlock, ES_Event_t *pReturnEvent)
 {
   pQueue_t  pThisQueue;
   uint8_t   NumLeft;
@@ -210,7 +210,7 @@ uint8_t ES_DeQueue(ES_Event *pBlock, ES_Event *pReturnEvent)
  Author
    J. Edward Carryer, 08/10/11, 13:29
 ****************************************************************************/
-bool ES_IsQueueEmpty(ES_Event *pBlock)
+bool ES_IsQueueEmpty(ES_Event_t *pBlock)
 {
   pQueue_t pThisQueue;
 

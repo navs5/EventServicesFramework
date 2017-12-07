@@ -61,7 +61,7 @@ static void BlinkLED(void);
 // with the introduction of Gen2, we need a module level Priority variable
 static uint8_t MyPriority;
 // add a deferral queue for up to 3 pending deferrals +1 to allow for ovehead
-static ES_Event DeferralQueue[3 + 1];
+static ES_Event_t DeferralQueue[3 + 1];
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -84,7 +84,7 @@ static ES_Event DeferralQueue[3 + 1];
 ****************************************************************************/
 bool InitTestHarnessService0(uint8_t Priority)
 {
-  ES_Event ThisEvent;
+  ES_Event_t ThisEvent;
 
   MyPriority = Priority;
   /********************************************
@@ -140,7 +140,7 @@ bool InitTestHarnessService0(uint8_t Priority)
  Author
      J. Edward Carryer, 10/23/11, 19:25
 ****************************************************************************/
-bool PostTestHarnessService0(ES_Event ThisEvent)
+bool PostTestHarnessService0(ES_Event_t ThisEvent)
 {
   return ES_PostToService(MyPriority, ThisEvent);
 }
@@ -162,9 +162,9 @@ bool PostTestHarnessService0(ES_Event ThisEvent)
  Author
    J. Edward Carryer, 01/15/12, 15:23
 ****************************************************************************/
-ES_Event RunTestHarnessService0(ES_Event ThisEvent)
+ES_Event_t RunTestHarnessService0(ES_Event_t ThisEvent)
 {
-  ES_Event ReturnEvent;
+  ES_Event_t ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
   static char DeferredChar = '1';
 
