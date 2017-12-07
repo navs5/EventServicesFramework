@@ -26,7 +26,7 @@
 
 typedef struct ES_Event
 {
-  ES_EventTyp_t EventType;      // what kind of event?
+  ES_EventType_t EventType;      // what kind of event?
   uint16_t EventParam;          // parameter value for use w/ this event
 }ES_Event_t;
 
