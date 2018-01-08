@@ -32,7 +32,7 @@
 // machines that will have common events delivered to them.
 
 #if NUM_DIST_LISTS > 0
-static bool PostToList(PostFunc_t *const *FuncList, uint8_t ListSize, ES_Event NewEvent);
+static bool PostToList(PostFunc_t *const *FuncList, uint8_t ListSize, ES_Event_t NewEvent);
 static PostFunc_t *const DistList00[] = {
   DIST_LIST0
 };
@@ -93,7 +93,7 @@ static PostFunc_t *const DistList07[] = {
  Author
    J. Edward Carryer, 10/24/11, 07:48
 ****************************************************************************/
-bool ES_PostList00(ES_Event NewEvent)
+bool ES_PostList00(ES_Event_t NewEvent)
 {
   return PostToList(DistList00, ARRAY_SIZE(DistList00), NewEvent);
 }
@@ -172,7 +172,7 @@ bool ES_PostList07(ES_Event NewEvent)
  Author
    J. Edward Carryer, 10/24/11, 07:52
 ****************************************************************************/
-static bool PostToList(PostFunc_t *const *List, uint8_t ListSize, ES_Event NewEvent)
+static bool PostToList(PostFunc_t *const *List, uint8_t ListSize, ES_Event_t NewEvent)
 {
   uint8_t i;
   // loop through the list executing the post functions

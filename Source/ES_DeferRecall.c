@@ -53,9 +53,9 @@
  Author
      J. Edward Carryer, 11/20/13 16:49
 ****************************************************************************/
-bool ES_RecallEvents(uint8_t WhichService, ES_Event *pBlock)
+bool ES_RecallEvents(uint8_t WhichService, ES_Event_t *pBlock)
 {
-  ES_Event  RecalledEvent;
+  ES_Event_t  RecalledEvent;
   bool      WereEventsPulled = false;
   // recall any events from the queue
   do

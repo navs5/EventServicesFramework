@@ -432,16 +432,6 @@
               <FileType>1</FileType>
               <FilePath>.\Source\TemplateFSM.c</FilePath>
             </File>
-            <File>
-              <FileName>ES_ShortTimer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\ES_ShortTimer.c</FilePath>
-            </File>
-            <File>
-              <FileName>EnablePA25_PB23_PD7_PF0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\EnablePA25_PB23_PD7_PF0.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -637,6 +627,16 @@
             </GroupArmAds>
           </GroupOption>
           <Files>
+            <File>
+              <FileName>ES_ShortTimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\ES_ShortTimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>EnablePA25_PB23_PD7_PF0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\EnablePA25_PB23_PD7_PF0.c</FilePath>
+            </File>
             <File>
               <FileName>ES_CheckEvents.c</FileName>
               <FileType>1</FileType>

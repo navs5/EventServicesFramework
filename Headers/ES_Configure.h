@@ -262,7 +262,7 @@ typedef enum
   ES_NEW_KEY,               /* signals a new key received from terminal */
   ES_LOCK,
   ES_UNLOCK
-}ES_EventTyp_t;
+}ES_EventType_t;
 
 /****************************************************************************/
 // These are the definitions for the Distribution lists. Each definition
