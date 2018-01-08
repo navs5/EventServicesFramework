@@ -41,8 +41,8 @@ typedef enum
 
 ES_Return_t ES_Initialize(TimerRate_t NewRate);
 ES_Return_t ES_Run(void);
-bool ES_PostAll(ES_Event ThisEvent);
-bool ES_PostToService(uint8_t WhichService, ES_Event ThisEvent);
-bool ES_PostToServiceLIFO(uint8_t WhichService, ES_Event TheEvent);
+bool ES_PostAll(ES_Event_t ThisEvent);
+bool ES_PostToService(uint8_t WhichService, ES_Event_t ThisEvent);
+bool ES_PostToServiceLIFO(uint8_t WhichService, ES_Event_t TheEvent);
 
 #endif   // ES_Framework_H

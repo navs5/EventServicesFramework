@@ -56,6 +56,6 @@
  Author
      J. Edward Carryer, 11/20/13 16:49
 ****************************************************************************/
-bool ES_RecallEvents(uint8_t WhichService, ES_Event *pBlock);
+bool ES_RecallEvents(uint8_t WhichService, ES_Event_t *pBlock);
 
 #endif

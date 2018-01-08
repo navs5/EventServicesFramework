@@ -63,7 +63,7 @@ static uint8_t MyPriority;
 ****************************************************************************/
 bool InitTemplateFSM(uint8_t Priority)
 {
-  ES_Event ThisEvent;
+  ES_Event_t ThisEvent;
 
   MyPriority = Priority;
   // put us into the Initial PseudoState
@@ -97,7 +97,7 @@ bool InitTemplateFSM(uint8_t Priority)
  Author
      J. Edward Carryer, 10/23/11, 19:25
 ****************************************************************************/
-bool PostTemplateFSM(ES_Event ThisEvent)
+bool PostTemplateFSM(ES_Event_t ThisEvent)
 {
   return ES_PostToService(MyPriority, ThisEvent);
 }
@@ -119,9 +119,9 @@ bool PostTemplateFSM(ES_Event ThisEvent)
  Author
    J. Edward Carryer, 01/15/12, 15:23
 ****************************************************************************/
-ES_Event RunTemplateFSM(ES_Event ThisEvent)
+ES_Event_t RunTemplateFSM(ES_Event_t ThisEvent)
 {
-  ES_Event ReturnEvent;
+  ES_Event_t ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
   switch (CurrentState)

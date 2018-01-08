@@ -24,10 +24,10 @@
 
 #include "ES_Configure.h"
 
-typedef struct ES_Event_t
+typedef struct ES_Event
 {
-  ES_EventTyp_t EventType;      // what kind of event?
+  ES_EventType_t EventType;      // what kind of event?
   uint16_t EventParam;          // parameter value for use w/ this event
-}ES_Event;
+}ES_Event_t;
 
 #endif /* ES_Events_H */

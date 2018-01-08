@@ -293,7 +293,7 @@ void ES_Timer_Tick_Resp(void)
 {
   static Tflag_t  NeedsProcessing;
   static uint8_t  NextTimer2Process;
-  static ES_Event NewEvent;
+  static ES_Event_t NewEvent;
 
   if (TMR_ActiveFlags != 0) /* if !=0 , then at least 1 timer is active */
   {

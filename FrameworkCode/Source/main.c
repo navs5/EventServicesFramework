@@ -11,8 +11,8 @@
  08/21/17 12:53 jec     added this header as part of coding standard and added
                         code to enable as GPIO the port poins that come out of
                         reset locked or in an alternate function.
-*****************************************************************************/# include <stdint.h>
-
+*****************************************************************************/
+#include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
 

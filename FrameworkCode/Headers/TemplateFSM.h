@@ -23,8 +23,8 @@ typedef enum
 // Public Function Prototypes
 
 bool InitTemplateFSM(uint8_t Priority);
-bool PostTemplateFSM(ES_Event ThisEvent);
-ES_Event RunTemplateFSM(ES_Event ThisEvent);
+bool PostTemplateFSM(ES_Event_t ThisEvent);
+ES_Event_t RunTemplateFSM(ES_Event_t ThisEvent);
 TemplateState_t QueryTemplateSM(void);
 
 #endif /* FSMTemplate_H */
