@@ -90,7 +90,7 @@ void ES_ShortTimerInit(uint8_t TimeAPrio, uint8_t TimeBPrio)
   TimerPrescaleSet(TIMER5_BASE, TIMER_BOTH, PRE_1uS);
 // log the service to which the timeout will be posted
   Timer_A_Priority  = TimeAPrio;
-  Timer_B_Priority  = TimeAPrio;
+  Timer_B_Priority  = TimeBPrio;
 }
 
 void ES_ShortTimerStart(uint32_t Which, uint16_t TimeoutValue)
