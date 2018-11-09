@@ -1,0 +1,10 @@
+.\outputs\es_checkevents.o: Source\ES_CheckEvents.c
+.\outputs\es_checkevents.o: .\Headers\ES_Configure.h
+.\outputs\es_checkevents.o: .\Headers\ES_Events.h
+.\outputs\es_checkevents.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+.\outputs\es_checkevents.o: .\Headers\ES_General.h
+.\outputs\es_checkevents.o: .\Headers\ES_CheckEvents.h
+.\outputs\es_checkevents.o: .\Headers\ES_Types.h
+.\outputs\es_checkevents.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdbool.h
+.\outputs\es_checkevents.o: .\Headers\ES_EventCheckWrapper.h
+.\outputs\es_checkevents.o: .\Headers\EventCheckers.h

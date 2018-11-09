@@ -1,0 +1,25 @@
+--cpu Cortex-M4.fp
+".\outputs\main.o"
+".\outputs\eventcheckers.o"
+".\outputs\testharnessservice0.o"
+".\outputs\templatefsm.o"
+"C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib\rvmdk\driverlib.lib"
+".\outputs\startup_rvmdk.o"
+".\outputs\es_shorttimer.o"
+".\outputs\enablepa25_pb23_pd7_pf0.o"
+".\outputs\es_checkevents.o"
+".\outputs\es_deferrecall.o"
+".\outputs\es_framework.o"
+".\outputs\es_lookuptables.o"
+".\outputs\es_port.o"
+".\outputs\es_postlist.o"
+".\outputs\es_queue.o"
+".\outputs\es_timers.o"
+".\outputs\retarget.o"
+".\outputs\termio.o"
+".\outputs\uartstdio.o"
+--strict --scatter ".\Outputs\BaseTarget.sct"
+
+--entry Reset_Handler --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Outputs\BaseTarget.map" -o .\Outputs\BaseTarget.axf

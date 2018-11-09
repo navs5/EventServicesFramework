@@ -1,0 +1,10 @@
+.\outputs\enablepa25_pb23_pd7_pf0.o: Source\EnablePA25_PB23_PD7_PF0.c
+.\outputs\enablepa25_pb23_pd7_pf0.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+.\outputs\enablepa25_pb23_pd7_pf0.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdbool.h
+.\outputs\enablepa25_pb23_pd7_pf0.o: .\Headers\EnablePA25_PB23_PD7_PF0.h
+.\outputs\enablepa25_pb23_pd7_pf0.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_types.h
+.\outputs\enablepa25_pb23_pd7_pf0.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_memmap.h
+.\outputs\enablepa25_pb23_pd7_pf0.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_gpio.h
+.\outputs\enablepa25_pb23_pd7_pf0.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/sysctl.h
+.\outputs\enablepa25_pb23_pd7_pf0.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/pin_map.h
+.\outputs\enablepa25_pb23_pd7_pf0.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/gpio.h
