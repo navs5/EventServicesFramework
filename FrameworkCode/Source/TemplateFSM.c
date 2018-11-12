@@ -85,7 +85,7 @@ bool InitTemplateFSM(uint8_t Priority)
      PostTemplateFSM
 
  Parameters
-     EF_Event ThisEvent , the event to post to the queue
+     EF_Event_t ThisEvent , the event to post to the queue
 
  Returns
      boolean False if the Enqueue operation failed, True otherwise
@@ -107,10 +107,10 @@ bool PostTemplateFSM(ES_Event_t ThisEvent)
     RunTemplateFSM
 
  Parameters
-   ES_Event : the event to process
+   ES_Event_t : the event to process
 
  Returns
-   ES_Event, ES_NO_EVENT if no error ES_ERROR otherwise
+   ES_Event_t, ES_NO_EVENT if no error ES_ERROR otherwise
 
  Description
    add your description here

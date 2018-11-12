@@ -15,8 +15,8 @@ typedef enum { STATE_ZERO, STATE_ONE, STATE_TWO } TemplateState_t ;
 
 // Public Function Prototypes
 
-ES_Event RunTemplateSM( ES_Event CurrentEvent );
-void StartTemplateSM ( ES_Event CurrentEvent );
+ES_Event_t RunTemplateSM( ES_Event_t CurrentEvent );
+void StartTemplateSM ( ES_Event_t CurrentEvent );
 TemplateState_t QueryTemplateSM ( void );
 
 #endif /*SHMTemplate_H */

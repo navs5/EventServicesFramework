@@ -13,8 +13,8 @@
 // Public Function Prototypes
 
 bool InitTemplateService(uint8_t Priority);
-bool PostTemplateService(ES_Event ThisEvent);
-ES_Event RunTemplateService(ES_Event ThisEvent);
+bool PostTemplateService(ES_Event_t ThisEvent);
+ES_Event_t RunTemplateService(ES_Event_t ThisEvent);
 
 #endif /* ServTemplate_H */
 
