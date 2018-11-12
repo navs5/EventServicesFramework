@@ -11,9 +11,9 @@ typedef enum { STATE_ONE, STATE_TWO, STATE_THREE } MasterState_t ;
 
 // Public Function Prototypes
 
-ES_Event RunMasterSM( ES_Event CurrentEvent );
-void StartMasterSM ( ES_Event CurrentEvent );
-bool PostMasterSM( ES_Event ThisEvent );
+ES_Event_t RunMasterSM( ES_Event_t CurrentEvent );
+void StartMasterSM ( ES_Event_t CurrentEvent );
+bool PostMasterSM( ES_Event_t ThisEvent );
 bool InitMasterSM ( uint8_t Priority );
 
 #endif /*TopHSMTemplate_H */

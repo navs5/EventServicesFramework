@@ -69,7 +69,7 @@
    functions, entry & exit functions.They should be functions relevant to the
    behavior of this state machine
 */
-static ES_Event DuringStateOne( ES_Event Event);
+static ES_Event_t DuringStateOne( ES_Event_t Event);
 
 /*---------------------------- Module Variables ---------------------------*/
 // everybody needs a state variable, you may need others as well
@@ -81,10 +81,10 @@ static TemplateState_t CurrentState;
     RunTemplateSM
 
  Parameters
-   ES_Event: the event to process
+   ES_Event_t: the event to process
 
  Returns
-   ES_Event: an event to return
+   ES_Event_t: an event to return
 
  Description
    add your description here
@@ -93,12 +93,12 @@ static TemplateState_t CurrentState;
  Author
    J. Edward Carryer, 2/11/05, 10:45AM
 ****************************************************************************/
-ES_Event RunTemplateSM( ES_Event CurrentEvent )
+ES_Event_t RunTemplateSM( ES_Event_t CurrentEvent )
 {
    bool MakeTransition = false;/* are we making a state transition? */
    TemplateState_t NextState = CurrentState;
-   ES_Event EntryEventKind = { ES_ENTRY, 0 };// default to normal entry to new state
-   ES_Event ReturnEvent = CurrentEvent; // assume we are not consuming event
+   ES_Event_t EntryEventKind = { ES_ENTRY, 0 };// default to normal entry to new state
+   ES_Event_t ReturnEvent = CurrentEvent; // assume we are not consuming event
 
    switch ( CurrentState )
    {
@@ -161,7 +161,7 @@ ES_Event RunTemplateSM( ES_Event CurrentEvent )
  Author
      J. Edward Carryer, 2/18/99, 10:38AM
 ****************************************************************************/
-void StartTemplateSM ( ES_Event CurrentEvent )
+void StartTemplateSM ( ES_Event_t CurrentEvent )
 {
    // to implement entry to a history state or directly to a substate
    // you can modify the initialization of the CurrentState variable
@@ -201,9 +201,9 @@ TemplateState_t QueryTemplateSM ( void )
  private functions
  ***************************************************************************/
 
-static ES_Event DuringStateOne( ES_Event Event)
+static ES_Event_t DuringStateOne( ES_Event_t Event)
 {
-    ES_Event ReturnEvent = Event; // assume no re-mapping or consumption
+    ES_Event_t ReturnEvent = Event; // assume no re-mapping or consumption
 
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) ||
