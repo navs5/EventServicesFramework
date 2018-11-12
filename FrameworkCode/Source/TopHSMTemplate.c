@@ -41,7 +41,7 @@
 /*----------------------------- Module Defines ----------------------------*/
 
 /*---------------------------- Module Functions ---------------------------*/
-static ES_Event DuringStateOne( ES_Event Event);
+static ES_Event_t DuringStateOne( ES_Event_t Event);
 
 /*---------------------------- Module Variables ---------------------------*/
 // everybody needs a state variable, though if the top level state machine
@@ -72,7 +72,7 @@ static uint8_t MyPriority;
 ****************************************************************************/
 bool InitMasterSM ( uint8_t Priority )
 {
-  ES_Event ThisEvent;
+  ES_Event_t ThisEvent;
 
   MyPriority = Priority;  // save our priority
 
@@ -89,7 +89,7 @@ bool InitMasterSM ( uint8_t Priority )
      PostMasterSM
 
  Parameters
-     ES_Event ThisEvent , the event to post to the queue
+     ES_Event_t ThisEvent , the event to post to the queue
 
  Returns
      boolean False if the post operation failed, True otherwise
@@ -101,7 +101,7 @@ bool InitMasterSM ( uint8_t Priority )
  Author
      J. Edward Carryer, 10/23/11, 19:25
 ****************************************************************************/
-bool PostMasterSM( ES_Event ThisEvent )
+bool PostMasterSM( ES_Event_t ThisEvent )
 {
   return ES_PostToService( MyPriority, ThisEvent);
 }
@@ -123,12 +123,12 @@ bool PostMasterSM( ES_Event ThisEvent )
  Author
    J. Edward Carryer, 02/06/12, 22:09
 ****************************************************************************/
-ES_Event RunMasterSM( ES_Event CurrentEvent )
+ES_Event_t RunMasterSM( ES_Event_t CurrentEvent )
 {
    bool MakeTransition = false;/* are we making a state transition? */
    MasterState_t NextState = CurrentState;
-   ES_Event EntryEventKind = { ES_ENTRY, 0 };// default to normal entry to new state
-   ES_Event ReturnEvent = { ES_NO_EVENT, 0 }; // assume no error
+   ES_Event_t EntryEventKind = { ES_ENTRY, 0 };// default to normal entry to new state
+   ES_Event_t ReturnEvent = { ES_NO_EVENT, 0 }; // assume no error
 
     switch ( CurrentState )
    {
@@ -190,7 +190,7 @@ ES_Event RunMasterSM( ES_Event CurrentEvent )
  Author
      J. Edward Carryer, 02/06/12, 22:15
 ****************************************************************************/
-void StartMasterSM ( ES_Event CurrentEvent )
+void StartMasterSM ( ES_Event_t CurrentEvent )
 {
   // if there is more than 1 state to the top level machine you will need 
   // to initialize the state variable
@@ -206,9 +206,9 @@ void StartMasterSM ( ES_Event CurrentEvent )
  private functions
  ***************************************************************************/
 
-static ES_Event DuringStateOne( ES_Event Event)
+static ES_Event_t DuringStateOne( ES_Event_t Event)
 {
-    ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
+    ES_Event_t ReturnEvent = Event; // assme no re-mapping or comsumption
 
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) ||

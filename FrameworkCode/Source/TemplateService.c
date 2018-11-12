@@ -56,7 +56,7 @@ static uint8_t MyPriority;
 ****************************************************************************/
 bool InitTemplateService(uint8_t Priority)
 {
-  ES_Event ThisEvent;
+  ES_Event_t ThisEvent;
 
   MyPriority = Priority;
   /********************************************
@@ -79,7 +79,7 @@ bool InitTemplateService(uint8_t Priority)
      PostTemplateService
 
  Parameters
-     EF_Event ThisEvent ,the event to post to the queue
+     EF_Event_t ThisEvent ,the event to post to the queue
 
  Returns
      bool false if the Enqueue operation failed, true otherwise
@@ -91,7 +91,7 @@ bool InitTemplateService(uint8_t Priority)
  Author
      J. Edward Carryer, 10/23/11, 19:25
 ****************************************************************************/
-bool PostTemplateService(ES_Event ThisEvent)
+bool PostTemplateService(ES_Event_t ThisEvent)
 {
   return ES_PostToService(MyPriority, ThisEvent);
 }
@@ -101,7 +101,7 @@ bool PostTemplateService(ES_Event ThisEvent)
     RunTemplateService
 
  Parameters
-   ES_Event : the event to process
+   ES_Event_t : the event to process
 
  Returns
    ES_Event, ES_NO_EVENT if no error ES_ERROR otherwise
@@ -113,9 +113,9 @@ bool PostTemplateService(ES_Event ThisEvent)
  Author
    J. Edward Carryer, 01/15/12, 15:23
 ****************************************************************************/
-ES_Event RunTemplateService(ES_Event ThisEvent)
+ES_Event_t RunTemplateService(ES_Event_t ThisEvent)
 {
-  ES_Event ReturnEvent;
+  ES_Event_t ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
   /********************************************
    in here you write your service code
