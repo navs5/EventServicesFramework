@@ -334,6 +334,14 @@ typedef enum
 /**************************************************************************/
 // uncomment this ine to get some basic framework operation debugging on
 // PF1 & PF2
-#define _INCLUDE_BASIC_FRAMEWORK_DEBUG_
+//#define _INCLUDE_BASIC_FRAMEWORK_DEBUG_
+
+#ifndef _INCLUDE_BASIC_FRAMEWORK_DEBUG_
+/**************************************************************************/
+// uncomment the next line to get byte-wide debugging on the '595
+// uses PF1, PF2 & PF3 
+#define _INCLUDE_BYTE_DEBUG_
+
+#endif /* _INCLUDE_BASIC_FRAMEWORK_DEBUG_ */
 
 #endif /* ES_CONFIGURE_H */

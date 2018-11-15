@@ -40,6 +40,7 @@
 #include "ES_Framework.h"
 #include "ES_DeferRecall.h"
 #include "ES_ShortTimer.h"
+#include "ES_Port.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // these times assume a 1.000mS/tick timing
@@ -47,6 +48,10 @@
 #define HALF_SEC (ONE_SEC / 2)
 #define TWO_SEC (ONE_SEC * 2)
 #define FIVE_SEC (ONE_SEC * 5)
+
+#define ENTER_POST     ((MyPriority<<3)|0)
+#define ENTER_RUN      ((MyPriority<<3)|1)
+#define ENTER_TIMEOUT  ((MyPriority<<3)|2)
 
 // #define ALL_BITS (0xff<<2)   Moved to ES_Port.h
 /*---------------------------- Module Functions ---------------------------*/
@@ -97,6 +102,11 @@ bool InitTestHarnessService0(uint8_t Priority)
   // initialize the Short timer system for channel A
   ES_ShortTimerInit(MyPriority, SHORT_TIMER_UNUSED);
 
+#ifdef _INCLUDE_BYTE_DEBUG_
+  // initialize the byte-wide debugging
+  _HW_ByteDebug_Init();
+#endif  
+
   // set up I/O lines for debugging
   // enable the clock to Port B
   HWREG(SYSCTL_RCGCGPIO) |= SYSCTL_RCGCGPIO_R1;
@@ -142,6 +152,10 @@ bool InitTestHarnessService0(uint8_t Priority)
 ****************************************************************************/
 bool PostTestHarnessService0(ES_Event_t ThisEvent)
 {
+#ifdef _INCLUDE_BYTE_DEBUG_
+  _HW_ByteDebug_SetValueWithStrobe( ENTER_POST );
+  _HW_ByteDebug_SetValueWithStrobe( END_SERVICE );
+#endif  
   return ES_PostToService(MyPriority, ThisEvent);
 }
 
@@ -168,6 +182,9 @@ ES_Event_t RunTestHarnessService0(ES_Event_t ThisEvent)
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
   static char DeferredChar = '1';
 
+#ifdef _INCLUDE_BYTE_DEBUG_
+  _HW_ByteDebug_SetValueWithStrobe( ENTER_RUN );
+#endif  
   switch (ThisEvent.EventType)
   {
     case ES_INIT:
@@ -179,9 +196,12 @@ ES_Event_t RunTestHarnessService0(ES_Event_t ThisEvent)
     break;
     case ES_TIMEOUT:   // re-start timer & announce
     {
+#ifdef _INCLUDE_BYTE_DEBUG_
+      _HW_ByteDebug_SetValueWithStrobe( ENTER_TIMEOUT );
+#endif  
       ES_Timer_InitTimer(SERVICE0_TIMER, FIVE_SEC);
-      printf("ES_TIMEOUT received from Timer %d in Service %d\r\n",
-          ThisEvent.EventParam, MyPriority);
+     /* printf("ES_TIMEOUT received from Timer %d in Service %d\r\n",
+          ThisEvent.EventParam, MyPriority);*/
       BlinkLED();
     }
     break;
@@ -227,6 +247,10 @@ ES_Event_t RunTestHarnessService0(ES_Event_t ThisEvent)
     {}
      break;
   }
+#ifdef _INCLUDE_BYTE_DEBUG_
+  _HW_ByteDebug_SetValueWithStrobe( END_SERVICE );
+#endif  
+
   return ReturnEvent;
 }
 
