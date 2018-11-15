@@ -109,10 +109,19 @@ uint16_t ES_Timer_GetTime(void);
 // prototypes for debugging port functions
 #ifdef _INCLUDE_BASIC_FRAMEWORK_DEBUG_
 void _HW_DebugLines_Init(void);
-void _HW_DebugSetLine1(void);
-void _HW_DebugClearLine1(void);
-void _HW_DebugSetLine2(void);
-void _HW_DebugClearLine2(void);
-
+void _HW_DebugLines_SetLine1(void);
+void _HW_DebugLines_ClearLine1(void);
+void _HW_DebugLines_SetLine2(void);
+void _HW_DebugLines_ClearLine2(void);
 #endif
+
+#ifdef _INCLUDE_BYTE_DEBUG_
+void _HW_ByteDebug_Init( void);
+void _HW_ByteDebug_ClearBit( uint8_t WhichBit );
+void _HW_ByteDebug_SetBit( uint8_t WhichBit );
+void _HW_ByteDebug_SetValue( uint8_t NewValue );
+void _HW_ByteDebug_SetValueWithStrobe( uint8_t NewValue );
+#define END_SERVICE 0xff
+#endif  /* _INCLUDE_BYTE_DEBUG_ */
+
 #endif
