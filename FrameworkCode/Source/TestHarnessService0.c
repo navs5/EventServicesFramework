@@ -200,8 +200,8 @@ ES_Event_t RunTestHarnessService0(ES_Event_t ThisEvent)
       _HW_ByteDebug_SetValueWithStrobe( ENTER_TIMEOUT );
 #endif  
       ES_Timer_InitTimer(SERVICE0_TIMER, FIVE_SEC);
-     /* printf("ES_TIMEOUT received from Timer %d in Service %d\r\n",
-          ThisEvent.EventParam, MyPriority);*/
+     printf("ES_TIMEOUT received from Timer %d in Service %d\r\n",
+          ThisEvent.EventParam, MyPriority);
       BlinkLED();
     }
     break;
