@@ -22,6 +22,8 @@
 // this will pull in the symbolic definitions for events, which we will want
 // to post in response to detecting events
 #include "ES_Configure.h"
+// This gets us the prototype for ES_PostAll
+#include "ES_Framework.h"
 // this will get us the structure definition for events, which we will need
 // in order to post events in response to detecting events
 #include "ES_Events.h"
@@ -72,9 +74,9 @@ bool Check4Lock(void)
     ES_Event ThisEvent;
     ThisEvent.EventType   = ES_LOCK;
     ThisEvent.EventParam  = 1;
-    // this could be any of the service post function, ES_PostListx or
+    // this could be any of the service post functions, ES_PostListx or
     // ES_PostAll functions
-    ES_PostList01(ThisEvent);
+    ES_PostAll(ThisEvent);
     ReturnVal = true;
   }
   LastPinState = CurrentPinState; // update the state for next time
@@ -111,16 +113,7 @@ bool Check4Keystroke(void)
     ES_Event_t ThisEvent;
     ThisEvent.EventType   = ES_NEW_KEY;
     ThisEvent.EventParam  = GetNewKey();
-    // test distribution list functionality by sending the 'L' key out via
-    // a distribution list.
-    if (ThisEvent.EventParam == 'L')
-    {
-      ES_PostList00(ThisEvent);
-    }
-    else     // otherwise post to Service 0 for processing
-    {
-      PostTestHarnessService0(ThisEvent);
-    }
+    ES_PostAll(ThisEvent);
     return true;
   }
   return false;
