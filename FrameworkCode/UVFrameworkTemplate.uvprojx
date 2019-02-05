@@ -427,11 +427,6 @@
               <FileType>1</FileType>
               <FilePath>.\Source\TestHarnessService0.c</FilePath>
             </File>
-            <File>
-              <FileName>TemplateFSM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\TemplateFSM.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -541,6 +536,11 @@
               <FileName>ES_ShortTimer.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Headers\ES_ShortTimer.h</FilePath>
+            </File>
+            <File>
+              <FileName>ES_EventCheckWrapper.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\ES_EventCheckWrapper.h</FilePath>
             </File>
           </Files>
         </Group>
